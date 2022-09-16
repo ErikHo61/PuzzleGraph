@@ -3,32 +3,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:graphxctrl="clr-namespace:GraphX.Controls;assembly=GraphX.WPF.Controls"
         xmlns:local="clr-namespace:PuzzleGraph"
         xmlns:controls="http://schemas.panthernet.ru/graphx/"
         xmlns:models="clr-namespace:PuzzleGraph.Models"
+        xmlns:custom="clr-namespace:PuzzleGraph.CustomControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    
+        Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <graphxctrl:ZoomControl x:Name="gg_zoomctrl">
-            <models:GraphAreaExample x:Name="gg_Area"/>
-        </graphxctrl:ZoomControl>
 
-        <DockPanel LastChildFill="False" Grid.Column="1" Margin="3" Grid.RowSpan="2">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
-                <Button Height="50" Margin="3" Name="gg_but_randomgraph"  DockPanel.Dock="Top" UseLayoutRounding="True">
-                    <Image Source="/Images/dice.png"/>
-                </Button>
-                <Button Height="50" Margin="3" Name="gg_but_relayout" DockPanel.Dock="Top" UseLayoutRounding="True">
-                    <Image Source="/Images/update.png"/>
-                </Button>
-            </StackPanel>
-        </DockPanel>
+        <StackPanel Background="LightGray">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Padding="10 5" Margin="5" Content="Schmix"></Button>
+                <Button Padding="10 5" Margin="5" Grid.Column="1">Next2</Button>
+            </Grid>
+          
+        </StackPanel>
+        
+        <Canvas Grid.Column="1" Name="GraphCanvas" Background="CornflowerBlue" Focusable="True">
+            
+        </Canvas>
+
+           
+      
+       
+
+
     </Grid>
 </Window>

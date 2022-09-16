@@ -1,29 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GraphX.Common.Models;
+using QuikGraph;
+using PuzzleGraph.CustomControls;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace PuzzleGraph.Models
 {
-    public class DataEdge : EdgeBase<DataVertex>
+    public class DataEdge : DataEdgeBase<GraphNode>
     {
-
-        public DataEdge(DataVertex source, DataVertex target, double weight = 1) : base(source, target, weight)
-        { }
-
-        public DataEdge() : base(null, null, 1)
-        { }
-
-        public string Text { get; set; }
-
-        #region Get members
-        public override string ToString()
+        public int X1;
+        public int X2;
+        public int Y1;
+        public int Y2;
+        public DataEdge(GraphNode source, GraphNode target) : base(source, target)
         {
-            return Text;
-           
+
         }
-        #endregion
+
+        public DataEdge()
+           : base(null, null)
+        {
+        }
+
+        static DataEdge()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DataEdge), new FrameworkPropertyMetadata(typeof(DataEdge)));
+        }
+
     }
 }
