@@ -7,7 +7,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:GraphNode">
                     <Grid>
-                        <Ellipse Fill="AliceBlue" Width="40" Height="40" Visibility="Visible" Stroke="Black" StrokeThickness="3"></Ellipse>
+                        <Ellipse x:Name="PART_Body" Fill="AliceBlue" Width="40" Height="40" Visibility="Visible" Stroke="Black" StrokeThickness="3"></Ellipse>
                     </Grid>
                 </ControlTemplate>    
             </Setter.Value>

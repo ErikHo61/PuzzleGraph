@@ -7,7 +7,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataEdge">
                     <Grid>
-                        <Line Stroke="Black" StrokeThickness="3"></Line>
+                        <Line x:Name="PART_Edge"  Stroke="Black" StrokeThickness="3"></Line>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

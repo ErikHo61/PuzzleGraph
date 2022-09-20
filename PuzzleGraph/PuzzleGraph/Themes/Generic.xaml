@@ -3,5 +3,6 @@
                     xmlns:local="clr-namespace:PuzzleGraph.Themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CustomControls/GraphNodeStyle.xaml"/>
+        <ResourceDictionary Source="/Models/DataEdgeStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

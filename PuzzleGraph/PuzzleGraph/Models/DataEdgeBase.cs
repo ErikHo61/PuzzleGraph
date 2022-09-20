@@ -7,18 +7,9 @@ namespace PuzzleGraph.Models
 {
     public abstract class DataEdgeBase<TVertex> : Control, IEdge<TVertex>
     {
-        public int X1;
-        public int X2;
-        public int Y1;
-        public int Y2;
+        
 
-        public TVertex Source {
-            get => Source;
-  
-            set { 
-                X1 = (GraphNode) Source.GetValue(Canvas.LeftProperty); 
-            }
-        }
+        public TVertex Source { get; set; }
 
         /// <summary>
         /// Target vertex

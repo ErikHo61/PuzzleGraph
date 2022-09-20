@@ -74,7 +74,31 @@ namespace PuzzleGraph
 
             //}
 
-            //List<GraphNode> myl = graph.Vertices.ToList();
+            List<GraphNode> myl = graph.Vertices.ToList();
+            Console.WriteLine("Number of graphnodes {0}", myl.Count);
+            GraphNode gn1 = myl[0];
+            Console.WriteLine("Left = {0}, Top={1}", gn1.GetValue(Canvas.LeftProperty), gn1.GetValue(Canvas.TopProperty));
+            GraphNode gn2 = myl[1];
+            Console.WriteLine("Left = {0}, Top={1}", gn2.GetValue(Canvas.LeftProperty), gn2.GetValue(Canvas.TopProperty));
+            GraphNode gn3 = myl[2];
+            Console.WriteLine("Left = {0}, Top={1}", gn3.GetValue(Canvas.LeftProperty), gn3.GetValue(Canvas.TopProperty));
+            GraphNode gn4 = myl[3];
+            Console.WriteLine("Left = {0}, Top={1}", gn4.GetValue(Canvas.LeftProperty), gn4.GetValue(Canvas.TopProperty));
+            GraphNode gn5 = myl[4];
+            Console.WriteLine("Left = {0}, Top={1}", gn5.GetValue(Canvas.LeftProperty), gn5.GetValue(Canvas.TopProperty));
+            GraphNode gn6 = myl[5];
+            Console.WriteLine("Left = {0}, Top={1}", gn6.GetValue(Canvas.LeftProperty), gn6.GetValue(Canvas.TopProperty));
+            GraphNode gn7 = myl[6];
+            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
+            GraphNode gn8 = myl[7];
+            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
+            GraphNode gn9 = myl[8];
+            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
+            GraphNode gn10 = myl[9];
+            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
+            GraphNode gn13 = myl[12];
+            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
+
 
             Line l = new Line()
             {
@@ -86,13 +110,21 @@ namespace PuzzleGraph
                 Stroke = Brushes.Black
             };
 
-            GraphCanvas.Children.Add(l);
+            DataEdge de = new DataEdge(gn1, gn2);
+            DataEdge de2 = new DataEdge(gn2, gn3);
+            DataEdge de3 = new DataEdge(gn7, gn8);
+            DataEdge de4 = new DataEdge(gn8, gn9);
+            DataEdge de5 = new DataEdge(gn8, gn3);
+            DataEdge de6 = new DataEdge(gn8, gn13);
 
-
+            GraphCanvas.Children.Add(de);
+            GraphCanvas.Children.Add(de2);
+            GraphCanvas.Children.Add(de3);
+            GraphCanvas.Children.Add(de4);
+            GraphCanvas.Children.Add(de5);
+            GraphCanvas.Children.Add(de6);
 
             Console.WriteLine("Hello");
-
-          
 
         }
 
