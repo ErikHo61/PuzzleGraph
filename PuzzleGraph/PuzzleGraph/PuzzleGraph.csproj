@@ -100,8 +100,13 @@
     <Compile Include="Models\DataEdge.cs" />
     <Compile Include="Models\DataEdgeBase.cs" />
     <Compile Include="Models\DataGraph.cs" />
-    <Compile Include="Models\DataVertex.cs" />
+    <Compile Include="Models\HostGraph.cs" />
     <Compile Include="Models\LevelObject.cs" />
+    <Compile Include="Models\Morphism.cs" />
+    <Compile Include="Models\Recipe.cs" />
+    <Compile Include="Models\Rule.cs" />
+    <Compile Include="Models\Rules\RuleStart.cs" />
+    <Compile Include="Models\GraphManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +136,9 @@
   <ItemGroup>
     <Resource Include="Images\dice.png" />
     <Resource Include="Images\update.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Recipes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,21 +9,30 @@ using PuzzleGraph.CustomControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace PuzzleGraph.Models
 {
     public class DataEdge : DataEdgeBase<GraphNode>
     {
+        // The direction which the target is relative to the source GraphNode
         public enum TargetDirection{ 
             Right, Down, Left, Up
         }
-
+        //The Line control in the custom template
         public Line edge;
+
+        //Whether this is a walkable path
+        public bool isPath { get; set; } = false;
+        //Is it a door?
+        public bool isDoor { get; set; } = false;
 
         public DataEdge(GraphNode source, GraphNode target) : base(source, target)
         {
             edge = new Line();
-            if (edge != null) {
+            if (edge != null && !Double.IsNaN((double) source.GetValue(Canvas.LeftProperty))
+                && !Double.IsNaN((double)target.GetValue(Canvas.LeftProperty))) {
+
                 edge.X1 = (double)source.GetValue(Canvas.LeftProperty) + source.dWidth;
                 edge.Y1 = (double)source.GetValue(Canvas.TopProperty) + source.dHeight/2;
 
@@ -38,6 +47,7 @@ namespace PuzzleGraph.Models
         {
         }
 
+        //For overridining the default style with the template
         static DataEdge()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DataEdge), new FrameworkPropertyMetadata(typeof(DataEdge)));
@@ -52,9 +62,16 @@ namespace PuzzleGraph.Models
 
         }
 
-        //Should update the position of the line everytime source/target changes
+        // Update Line Method
+        // Summary: Should update the line everytime anything changes source/target changes
+        // also adjusts the length of line to fit between nodes
         private void UpdateLine() {
-            if (edge != null && Source != null) {
+
+            if (edge != null && Source != null && (double)Source.GetValue(Canvas.LeftProperty) != double.NaN) {
+                if (!isPath) edge.Stroke = Brushes.Red;
+                else if (isDoor) edge.Stroke = Brushes.Blue;
+                else edge.Stroke = Brushes.Black;
+
                 edge.X1 = (double)Source.GetValue(Canvas.LeftProperty) + Source.dWidth/2;
                 edge.Y1 = (double)Source.GetValue(Canvas.TopProperty) + Source.dHeight/2;
         
@@ -83,14 +100,13 @@ namespace PuzzleGraph.Models
                         Console.WriteLine("NONE");
                         break;
                 }
-               //edge.X2 = (double)Source.GetValue(Canvas.LeftProperty) + Source.dWidth / 2 + 70;
-                //edge.Y2 = (double)Source.GetValue(Canvas.TopProperty) + Source.dHeight / 2 + 70;
+                
             }
           
         }
 
+        //Finds the direction of which the target is relative to the source GraphNode
         private TargetDirection findDirection(GraphNode source, GraphNode target) {
-
             if ((double)target.GetValue(Canvas.LeftProperty) > (double)source.GetValue(Canvas.LeftProperty))
             {
                 return TargetDirection.Right;
@@ -99,8 +115,7 @@ namespace PuzzleGraph.Models
                 return TargetDirection.Left;
             } else if ((double) target.GetValue(Canvas.TopProperty) > (double)source.GetValue(Canvas.TopProperty)){
                 return TargetDirection.Down;
-            } else
-            {
+            } else{
                 return TargetDirection.Up;
             }
             

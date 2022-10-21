@@ -19,6 +19,7 @@ using PuzzleGraph.Models;
 using PuzzleGraph.CustomControls;
 using QuikGraph;
 using System.Drawing;
+using PuzzleGraph.Models.Rules;
 
 namespace PuzzleGraph
 {
@@ -55,76 +56,19 @@ namespace PuzzleGraph
             //Canvas.SetLeft(rect, GraphCanvas.ActualWidth/2);
             //Canvas.SetTop(rect, GraphCanvas.ActualHeight/2);
             //GraphCanvas.Children.Add(rect);
-            var graph = new DataGraph();
-
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 5; j++)
-                {
-                    GraphNode gn = new GraphNode();
-                    Canvas.SetTop(gn, 60 +  i * 70);
-                    Canvas.SetLeft(gn, 100 + j * 70);                
-                    graph.AddVertex(gn);
-                    GraphCanvas.Children.Add(gn);
-                }
-
-            }
+            
 
             //foreach (GraphNode v in graph.Vertices)
             //{ 
 
             //}
 
-            List<GraphNode> myl = graph.Vertices.ToList();
-            Console.WriteLine("Number of graphnodes {0}", myl.Count);
-            GraphNode gn1 = myl[0];
-            Console.WriteLine("Left = {0}, Top={1}", gn1.GetValue(Canvas.LeftProperty), gn1.GetValue(Canvas.TopProperty));
-            GraphNode gn2 = myl[1];
-            Console.WriteLine("Left = {0}, Top={1}", gn2.GetValue(Canvas.LeftProperty), gn2.GetValue(Canvas.TopProperty));
-            GraphNode gn3 = myl[2];
-            Console.WriteLine("Left = {0}, Top={1}", gn3.GetValue(Canvas.LeftProperty), gn3.GetValue(Canvas.TopProperty));
-            GraphNode gn4 = myl[3];
-            Console.WriteLine("Left = {0}, Top={1}", gn4.GetValue(Canvas.LeftProperty), gn4.GetValue(Canvas.TopProperty));
-            GraphNode gn5 = myl[4];
-            Console.WriteLine("Left = {0}, Top={1}", gn5.GetValue(Canvas.LeftProperty), gn5.GetValue(Canvas.TopProperty));
-            GraphNode gn6 = myl[5];
-            Console.WriteLine("Left = {0}, Top={1}", gn6.GetValue(Canvas.LeftProperty), gn6.GetValue(Canvas.TopProperty));
-            GraphNode gn7 = myl[6];
-            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
-            GraphNode gn8 = myl[7];
-            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
-            GraphNode gn9 = myl[8];
-            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
-            GraphNode gn10 = myl[9];
-            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
-            GraphNode gn13 = myl[12];
-            Console.WriteLine("Left = {0}, Top={1}", gn7.GetValue(Canvas.LeftProperty), gn7.GetValue(Canvas.TopProperty));
-
-
-            Line l = new Line()
-            {
-                X1 = 100+40,
-                X2 = 170,
-                Y1 = 60+20,
-                Y2 = 60+20,
-                StrokeThickness = 3,
-                Stroke = Brushes.Black
-            };
-
-            DataEdge de = new DataEdge(gn1, gn2);
-            DataEdge de2 = new DataEdge(gn2, gn3);
-            DataEdge de3 = new DataEdge(gn7, gn8);
-            DataEdge de4 = new DataEdge(gn8, gn9);
-            DataEdge de5 = new DataEdge(gn8, gn3);
-            DataEdge de6 = new DataEdge(gn8, gn13);
-
-            GraphCanvas.Children.Add(de);
-            GraphCanvas.Children.Add(de2);
-            GraphCanvas.Children.Add(de3);
-            GraphCanvas.Children.Add(de4);
-            GraphCanvas.Children.Add(de5);
-            GraphCanvas.Children.Add(de6);
-
-            Console.WriteLine("Hello");
+            GraphManager gm = new GraphManager(GraphCanvas);
+            //st.graphSetup();
+            gm.SmallGraphSetup();
+            Rule rl = new RuleStart("start");
+            gm.ExecuteGrammar(rl);
+            gm.printGraph();
 
         }
 
