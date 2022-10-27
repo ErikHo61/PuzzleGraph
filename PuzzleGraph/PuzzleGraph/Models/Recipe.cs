@@ -16,5 +16,9 @@ namespace PuzzleGraph.Models
         }
 
         protected abstract void InitRecipe();
+
+        public List<Rule> getRules() {
+            return rules;
+        }
     }
 }

@@ -9,22 +9,14 @@ namespace PuzzleGraph.Models.Rules
 {
     public class RuleStart : Rule
     {
-        public RuleStart(string name) : base(name) {
+
+        public RuleStart() : base() {
             //RuleGraph = new DataGraph();
             //ProductGraph = new DataGraph();
             //InitRuleGraph();
             //InitProductGraph();
-        }
-
-        public override void ApplyRule(DataGraph hostGraph)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SubgraphSearch(DataGraph hostGraph)
-        {
-            throw new NotImplementedException();
-        }
+            name = "Rule Start";
+        } 
 
         protected override void InitRuleGraph()
         {

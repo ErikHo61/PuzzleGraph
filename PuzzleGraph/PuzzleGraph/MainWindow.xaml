@@ -21,7 +21,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Padding="10 5" Margin="5" Content="Schmix"></Button>
+                <Button Padding="10 5" Margin="5" Content="RefreshGraph" Click="OnClick_Refresh"></Button>
                 <Button Padding="10 5" Margin="5" Grid.Column="1">Next2</Button>
             </Grid>
           

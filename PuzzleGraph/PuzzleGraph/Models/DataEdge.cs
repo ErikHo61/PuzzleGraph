@@ -65,9 +65,10 @@ namespace PuzzleGraph.Models
         // Update Line Method
         // Summary: Should update the line everytime anything changes source/target changes
         // also adjusts the length of line to fit between nodes
-        private void UpdateLine() {
+        public void UpdateLine() {
 
-            if (edge != null && Source != null && (double)Source.GetValue(Canvas.LeftProperty) != double.NaN) {
+            if (edge != null && !Double.IsNaN((double)Source.GetValue(Canvas.LeftProperty))
+                && !Double.IsNaN((double)Target.GetValue(Canvas.LeftProperty))) {
                 if (!isPath) edge.Stroke = Brushes.Red;
                 else if (isDoor) edge.Stroke = Brushes.Blue;
                 else edge.Stroke = Brushes.Black;
@@ -94,7 +95,7 @@ namespace PuzzleGraph.Models
                     case TargetDirection.Down:
                         edge.Y1 += Source.dHeight / 2;
                         edge.Y2 -= Source.dHeight / 2;
-                        Console.WriteLine("Below");
+                        //Console.WriteLine("Below");
                         break;
                     default:
                         Console.WriteLine("NONE");

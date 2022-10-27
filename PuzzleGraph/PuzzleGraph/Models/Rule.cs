@@ -17,12 +17,15 @@ namespace PuzzleGraph.Models
         //contains the replacement graph
         protected DataGraph ProductGraph;
 
-        public Rule(string name) {
+        public string name;
+
+        public Rule() {
             //initialize rulegraph
             RuleGraph = new DataGraph();
             ProductGraph = new DataGraph();
             InitRuleGraph();
             InitProductGraph();
+            name = "";
         }
 
         public List<DataEdge> GetProductOutEdges(GraphNode node) {
@@ -63,6 +66,13 @@ namespace PuzzleGraph.Models
             return ProductGraph.Vertices.ToList();
         }
 
+        public List<DataEdge> GetRuleEdges() {
+            return RuleGraph.Edges.ToList();
+        }
+
+        public List<DataEdge> GetProductEdges() {
+            return ProductGraph.Edges.ToList();
+        }
 
         public Tuple<string, string> GetNodeTypes() {
             int vertCount = RuleGraph.VertexCount;
@@ -78,81 +88,13 @@ namespace PuzzleGraph.Models
         }
 
         protected abstract void InitRuleGraph(); 
-        //{           
-            //GraphNode gn = new GraphNode()
-            //{
-            //    Type = "S",
-            //    ID = 1
-            //};
-            //GraphNode gn2 = new GraphNode()
-            //{
-            //    Type = "e",
-            //    ID = 2
-            //};
-
-            //DataEdge de = new DataEdge(gn, gn2);
-
-            //RuleGraph.AddVertex(gn);
-            //RuleGraph.AddVertex(gn2);
-                   
-            
-            
-           
-        //}
-
+        
         protected abstract void InitProductGraph();
-        //{
-        //    //GraphNode gn = new GraphNode();
-        //    //GraphNode gn2 = new GraphNode();
-        //    //DataEdge de = new DataEdge(gn, gn2);
 
-        //    switch (name) {
-        //        case "start":
-        //            gn.Type = "S";
-        //            gn.ID = 1;
-        //            gn2.Type = "e";
-        //            gn2.ID = 2;
-                  
-
-        //            DataEdge de = new DataEdge(gn, gn2);
-
-        //            RuleGraph.AddVertex(gn);
-        //            RuleGraph.AddVertex(gn2);
-
-        //            break;
-        //        case "LinearChain":
-        //            gn.Type = "S";
-        //            gn.ID = 1;
-        //            gn2.Type = "e";
-        //            gn2.ID = 2;
-
-
-        //            DataEdge de = new DataEdge(gn, gn2);
-
-        //            RuleGraph.AddVertex(gn);
-        //            RuleGraph.AddVertex(gn2);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
-
-        //Searches for the matching subgraph in the host graph
-        //And returns nodes that will be replaced? or
-        public abstract void SubgraphSearch(DataGraph hostGraph);
-        //{
-        //    //foreach (GraphNode vertex in hostGraph.Vertices)
-        //    //{
-        //    //    foreach (DataEdge edge in hostGraph.InEdges(vertex))
-        //    //    {
-        //    //        //nothing so far
-        //    //    }
-        //    //}
-        //}
-
-        //
-        //Input: Host graph and nodes that will be replaced?
-        public abstract void ApplyRule(DataGraph hostGraph);
+        public override string ToString()
+        {
+            return name;
+        }
     }
 
         

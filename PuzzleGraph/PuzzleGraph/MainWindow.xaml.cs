@@ -20,6 +20,7 @@ using PuzzleGraph.CustomControls;
 using QuikGraph;
 using System.Drawing;
 using PuzzleGraph.Models.Rules;
+using PuzzleGraph.Models.Recipes;
 
 namespace PuzzleGraph
 {
@@ -28,6 +29,7 @@ namespace PuzzleGraph
     /// </summary>
     public partial class MainWindow : Window, IDisposable
     {
+        GraphManager gm;
         public MainWindow()
         {
             InitializeComponent();
@@ -63,13 +65,25 @@ namespace PuzzleGraph
 
             //}
 
-            GraphManager gm = new GraphManager(GraphCanvas);
+            gm = new GraphManager(GraphCanvas);
             //st.graphSetup();
             gm.SmallGraphSetup();
-            Rule rl = new RuleStart("start");
-            gm.ExecuteGrammar(rl);
+            Rule rl = new RuleStart();
+            Rule rl2 = new RuleExpand();
+            Rule rl3 = new RuleEnd();
+            Recipe rec = new RecipeBasic();
+            gm.ExecuteRecipe(rec);
+            //gm.ExecuteGrammar(rl);
+            //gm.ExecuteGrammar(rl2);
+            //gm.ExecuteGrammar(rl);
+            //gm.ExecuteGrammar(rl3);
             gm.printGraph();
 
+        }
+
+        void OnClick_Refresh(object sender, RoutedEventArgs e) {
+            Console.WriteLine("Refreshing Graph!");
+            gm.refreshGraph();
         }
 
       

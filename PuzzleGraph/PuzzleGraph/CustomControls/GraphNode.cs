@@ -18,6 +18,7 @@ namespace PuzzleGraph.CustomControls
         public int ruleID { get; set; }
         //for numbering nodes in a hostgraph
         public int graphID { get; set; }
+        public Tuple<int, int> gridPos;
         public List<LevelObject> LevelObjects { get => levelObjects; set => levelObjects = value; }
 
         private List<LevelObject> levelObjects;

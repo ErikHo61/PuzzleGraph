@@ -39,8 +39,14 @@ namespace PuzzleGraph.Models
 
         
 
-        public void deleteEdge(GraphNode source, GraphNode target) {
-            throw new NotImplementedException();
+        public bool deleteEdge(GraphNode source, GraphNode target) {
+            foreach (var edge in Edges.ToList()) {
+                if (edge.Source == source && edge.Target == target) {
+                    RemoveEdge(edge);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void deleteNode() {

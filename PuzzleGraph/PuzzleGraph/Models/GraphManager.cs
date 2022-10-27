@@ -20,20 +20,14 @@ namespace PuzzleGraph.Models
         HostGraph hostGraph;
         GraphNode rootNode;
         Canvas cv;
+        GridManager gridMan;
+        
 
         public GraphManager(Canvas cv) {
             hostGraph = new HostGraph();
+            gridMan = new GridManager(12, 12);
             this.cv = cv;
-
-            //Rectangle rect = new Rectangle
-            //{
-            //    Width = 50,
-            //    Height = 50,
-            //    Fill = new SolidColorBrush(Color.FromRgb(200, 60, 90)),
-            //    Stroke = Brushes.Black
-            //};
-
-            //cv.Children.Add(rect);
+            
         }
 
         //Sets up the graph with nodes and edges
@@ -44,8 +38,8 @@ namespace PuzzleGraph.Models
                 for (int j = 0; j < 5; j++)
                 {
                     GraphNode gn = new GraphNode();
-                    Canvas.SetTop(gn, 60 + i * 70);
-                    Canvas.SetLeft(gn, 100 + j * 70);
+                    Canvas.SetTop(gn, 60 + i * 60);
+                    Canvas.SetLeft(gn, 100 + j * 60);
                     hostGraph.AddVertex(gn);
                     cv.Children.Add(gn);
                 }
@@ -81,36 +75,18 @@ namespace PuzzleGraph.Models
             MakeAndAddEdge(gn7, gn2);
             MakeAndAddEdge(gn4, gn3);
             MakeAndAddEdge(gn9, gn4);
-            //DataEdge de = new DataEdge(gn5, gn0);
-            //DataEdge de2 = new DataEdge(gn6, gn1);
-            //DataEdge de3 = new DataEdge(gn7, gn2);
-            //DataEdge de4 = new DataEdge(gn4, gn3);
-            //DataEdge de5 = new DataEdge(gn9, gn4);
 
             MakeAndAddEdge(gn6, gn5);
             MakeAndAddEdge(gn7, gn6);
             MakeAndAddEdge(gn8, gn7);
             MakeAndAddEdge(gn3, gn8);
             MakeAndAddEdge(gn14, gn9);
-            //DataEdge de6 = new DataEdge(gn6, gn5);
-            //DataEdge de7 = new DataEdge(gn7, gn6);
-            //DataEdge de8 = new DataEdge(gn8, gn7);
-            //DataEdge de9 = new DataEdge(gn3, gn8);
-            //DataEdge de10 = new DataEdge(gn14, gn9);
-
 
             MakeAndAddEdge(gn5, gn10);
             MakeAndAddEdge(gn16, gn11);
             MakeAndAddEdge(gn12, gn13);
             MakeAndAddEdge(gn13, gn14);
-            MakeAndAddEdge(gn18, gn13);
-            
-            //DataEdge de11 = new DataEdge(gn5, gn10);
-            //DataEdge de12 = new DataEdge(gn16, gn11);
-            //DataEdge de13 = new DataEdge(gn18, gn13);
-            //DataEdge de14 = new DataEdge(gn13, gn14);
-            //DataEdge de15 = new DataEdge(gn14, gn9);
-
+            MakeAndAddEdge(gn18, gn13);           
 
             MakeAndAddEdge(gn10, gn15);
             MakeAndAddEdge(gn15, gn16);
@@ -119,27 +95,25 @@ namespace PuzzleGraph.Models
             MakeAndAddEdge(gn14, gn19);
 
             MakeAndAddEdge(gn17, gn18, false);
-            //DataEdge de16 = new DataEdge(gn10, gn15);
-            //DataEdge de17 = new DataEdge(gn15, gn16);
-            //DataEdge de18 = new DataEdge(gn16, gn17);
-            //DataEdge de19 = new DataEdge(gn19, gn18);
         }
 
         internal void SmallGraphSetup() {
-            int count = 0;
+
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
                     GraphNode gn = new GraphNode();
-                    Canvas.SetTop(gn, 60 + i * 70);
-                    Canvas.SetLeft(gn, 100 + j * 70);
+                    Canvas.SetTop(gn, 60 + i * 60);
+                    Canvas.SetLeft(gn, 100 + j * 60);
+                    
                     hostGraph.AddVertex(gn);
                     cv.Children.Add(gn);
                 }
 
             }
             List<GraphNode> myl = hostGraph.Vertices.ToList();
+            gridMan.InitGrid(myl);
             GraphNode gn0 = myl[0];
             GraphNode gn1 = myl[1];
             GraphNode gn2 = myl[2];
@@ -154,6 +128,14 @@ namespace PuzzleGraph.Models
 
             rootNode = gn0;
 
+        }
+
+        public void ExecuteRecipe(Recipe recipe) {
+            var rules = recipe.getRules();
+            foreach (var rule in rules) {
+                var matches = SubgraphSearch(rule, rootNode);
+                RuleReplacement(rule, matches);
+            }
         }
 
         public void ExecuteGrammar(Rule rule) {
@@ -195,11 +177,11 @@ namespace PuzzleGraph.Models
                     if (states[i]) {
                         continue;
                     }
-                    Console.WriteLine("Replace Node #{0}", i);
+                    Console.WriteLine("Replace pNode #{0}", i);
                     var node = pGraph[i];
                     //get Rule graph Node using Product Graph ID
                     var ruleGraphNode = rule.GetRuleNode(node.ruleID);
-                                   
+
                     //We already have a matching between host graph and rule graph
                     //Then we need a matching between hostgraph and product graph
                     if (!(ruleGraphNode is null)) //should i check the rule or the morphism list?
@@ -207,30 +189,50 @@ namespace PuzzleGraph.Models
                         Tuple<Morphism, Morphism> match = GetFirstMatch(matches);
                         Morphism m;
                         if (node.ruleID == 1) {
-                            m = match.Item1;  
-                        } else  { // only product node IDs that exist in rule node is 1 and 2
-                            m = match.Item2;  
+                            m = match.Item1;
+                        } else { // only product node IDs that exist in rule node is 1 and 2
+                            m = match.Item2;
                         }
-                       
+
                         m.productGraphNode = node;
                         morphs.Add(m);
-
-                        //perform replacement
+                        Console.WriteLine("Replace hgNode #{0} with Type {1}", m.hostGraphNode.graphID, node.Type);
+                        //perform replacement even if the node type is the same
                         m.hostGraphNode.Type = node.Type;
                         states[i] = true;
                     }
-                    else if (!(checkAttached(node, rule, morphs) is null))
+                    else if (checkAttached(node, rule, morphs).Item1.Count > 0 || checkAttached(node, rule, morphs).Item2.Count > 0)
                     { //If there is no match for it, check if it is attached to a node that has already been replaced
                         //Then add the attached node and edge
-                        var attachedNode = checkAttached(node, rule, morphs);
-                        var newNode = new GraphNode() {
+                        var attachedNodes = checkAttached(node, rule, morphs);
+                        var newNode = new GraphNode()
+                        {
                             Type = node.Type
                         };
-
-                        var edge = new DataEdge(attachedNode, newNode);
-                        hostGraph.AddVertex(newNode);                    
-                        hostGraph.AddEdge(edge);
-
+                        hostGraph.AddVertex(newNode);
+                        cv.Children.Add(newNode);
+                        //Add edges that go into this node                       
+                        foreach (var atNode in attachedNodes.Item1) {
+                            MakeAndAddEdge(atNode, newNode);
+                            
+                        }
+                        //Add edges that go out of this node
+                        foreach (var atNode in attachedNodes.Item2) {
+                            MakeAndAddEdge(newNode, atNode);
+                            
+                        }
+                        //Add nodes to GridManager
+                        if (attachedNodes.Item1.Count > 0) {
+                            var atNodePos = gridMan.getPosition(attachedNodes.Item1[0]);
+                            gridMan.addNode(new Tuple<int, int>(atNodePos.Item1, atNodePos.Item2), newNode);
+                        }
+                        else {
+                            var atNodePos = gridMan.getPosition(attachedNodes.Item2[0]);
+                            gridMan.addNode(new Tuple<int, int>(atNodePos.Item1, atNodePos.Item2), newNode);
+                        }
+                        //Adding a new node's morphism. No equivalent rule graph node exists so it is not added here
+                        Morphism morph2 = new Morphism(hostGraphNode: newNode, productGraphNode: node);
+                        morphs.Add(morph2);
                         states[i] = true;
                     }
                     else
@@ -240,35 +242,80 @@ namespace PuzzleGraph.Models
                  
                 }
                 replacementFinished = !states.Contains(false);
+                //If the replacement is finished, perform one final check to see if
+                //the edge in the rule graph exists in the product graph.
+                //if it doesn't exist, delete it from the hostGraph and the canvas children
+                if (replacementFinished && rule.GetRuleEdgeCount()>0) {
+                   
+                    var edges = rule.GetRuleEdges();
+                    bool found = false;
+                    foreach (var edge in edges) {
+                        var src = edge.Source;
+                        var target = edge.Target;
+                        var productEdges = rule.GetProductEdges();
+                        
+                        foreach (var pEdge in productEdges) {
+                            if (src.ruleID == pEdge.Source.ruleID && target.ruleID == pEdge.Target.ruleID) {
+                                found = true;
+                            }
+                        }
+                        
+                    }
+                    if (!found) {
+                        //Find the corresponding edge
+                        //Then delete the corresponding edge in the hostgraph and remove from canvas children
+                        GraphNode src2 = null;
+                        GraphNode tgt2 = null;
+                        foreach (var morph in morphs) {
+                            if (morph.ruleGraphNode == edges[0].Source) {
+                                src2 = morph.hostGraphNode;
+                            }
+                            if (morph.ruleGraphNode == edges[0].Target) {
+                                tgt2 = morph.hostGraphNode;
+                            }
+                        }
+
+                        foreach (var e in hostGraph.Edges.ToList()) {
+                            if (e.Source == src2 && e.Target == tgt2) {
+                                cv.Children.Remove(e);
+                                hostGraph.RemoveEdge(e);
+                            }
+                        }
+
+                    }
+                }
 
             }
         }
 
-        //  Finds the hostGraph node to attach a new graph node to.
-        // 
-        private GraphNode checkAttached(GraphNode pNode, Rule rule, List<Morphism> replacedMorphs)
+        //  Finds a list of attached hostGraph node to attach a new graph node to.
+        // @return two lists of attached hostGraph nodes which either go in or out of the new node
+        private Tuple<List<GraphNode>, List<GraphNode>> checkAttached(GraphNode pNode, Rule rule, List<Morphism> replacedMorphs)
         {
             //check if pNode is attached to another product node that has already been replaced in the graph
             var edgeIn = rule.GetProductInEdges(pNode);
             var edgeOut = rule.GetProductOutEdges(pNode);
+            List<GraphNode> inList = new List<GraphNode>();
+            List<GraphNode> outList = new List<GraphNode>();
+         
             foreach (var morph in replacedMorphs) {
                 for (int i = 0; i < edgeIn.Count(); i++) {
                     if (edgeIn[i].Source == morph.productGraphNode) {
                         //Find the hostGraph node equivalent to the above productGraph node
-                        return morph.hostGraphNode;
+                         inList.Add(morph.hostGraphNode);
                     } 
                 }
 
                 for (int i = 0; i < edgeOut.Count(); i++) {
                     if (edgeOut[i].Target == morph.productGraphNode)
                     {
-                        return morph.hostGraphNode;
+                        outList.Add(morph.hostGraphNode);
 
                     }
                 }
 
             }
-            return null;
+            return new Tuple<List<GraphNode>, List<GraphNode>>(inList, outList);
 
         }
 
@@ -349,17 +396,35 @@ namespace PuzzleGraph.Models
             return adjacentNodes;
         }
 
-        
+
         //gets in edges from hostgraph
-        private List<GraphNode> GetInAdjNodes(GraphNode node)
-        {
-            var edges = hostGraph.InEdges(node);
-            List<GraphNode> adjacentNodes = new List<GraphNode>();
+        //private List<GraphNode> GetInAdjNodes(GraphNode node)
+        //{
+        //    var edges = hostGraph.InEdges(node);
+        //    List<GraphNode> adjacentNodes = new List<GraphNode>();
+        //    foreach (var edge in edges)
+        //    {
+        //        adjacentNodes.Add(edge.Target);
+        //    }
+        //    return adjacentNodes;
+        //}
+
+        public void refreshGraph() {
+            var nodes = hostGraph.Vertices.ToList();
+            var edges = hostGraph.Edges.ToList();
+            foreach (var node in nodes) {
+                var gridPos = gridMan.getPosition(node);
+                Canvas.SetTop(node, 60 + gridPos.Item1 * 60);
+                Canvas.SetLeft(node, 100 + gridPos.Item2 * 60);
+
+            }
+
             foreach (var edge in edges)
             {
-                adjacentNodes.Add(edge.Target);
+                edge.UpdateLine();
+        
+
             }
-            return adjacentNodes;
         }
 
         public void printGraph() {
