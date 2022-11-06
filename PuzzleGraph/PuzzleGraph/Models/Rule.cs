@@ -17,15 +17,12 @@ namespace PuzzleGraph.Models
         //contains the replacement graph
         protected DataGraph ProductGraph;
 
-        public string name;
-
         public Rule() {
             //initialize rulegraph
             RuleGraph = new DataGraph();
             ProductGraph = new DataGraph();
             InitRuleGraph();
             InitProductGraph();
-            name = "";
         }
 
         public List<DataEdge> GetProductOutEdges(GraphNode node) {

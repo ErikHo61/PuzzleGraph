@@ -12,17 +12,28 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Background="LightGray">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Padding="10 5" Margin="5" Content="RefreshGraph" Click="OnClick_Refresh"></Button>
-                <Button Padding="10 5" Margin="5" Grid.Column="1">Next2</Button>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Padding="10 5" Margin="5" Content="RefreshGraph" Click="OnClick_Refresh" ></Button>
+                <Image Margin="10" Width="128" Name="myImage" Grid.Row="1">
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="128" UriSource="C:\Users\Erik\Pictures\bitmap.png">
+                            
+                        </BitmapImage>
+                    </Image.Source>
+                </Image>
             </Grid>
           
         </StackPanel>

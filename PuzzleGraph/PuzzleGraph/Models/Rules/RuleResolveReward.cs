@@ -7,45 +7,28 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models.Rules
 {
-    class RuleExpand : Rule
+    class RuleResolveReward : Rule
     {
-
         protected override void InitProductGraph()
         {
             GraphNode gn = new GraphNode()
             {
-                Type = "PC",
+                Type = "pr",
                 ruleID = 1
             };
-            GraphNode gn2 = new GraphNode()
-            {
-                Type = "PC",
-                ruleID = 2
-            };
 
-            DataEdge de = new DataEdge(gn, gn2);
-         
             ProductGraph.AddVertex(gn);
-            ProductGraph.AddVertex(gn2);
-           
-            ProductGraph.AddEdge(de);          
         }
 
         protected override void InitRuleGraph()
         {
             GraphNode gn = new GraphNode()
             {
-                Type = "PC",
+                Type = "PR",
                 ruleID = 1
             };
-           
-
-           
 
             RuleGraph.AddVertex(gn);
-            
-
-            
         }
     }
 }

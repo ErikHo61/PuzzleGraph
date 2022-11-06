@@ -20,7 +20,7 @@ namespace PuzzleGraph.Models
             this.width = width;
             this.height = height;
             grid = new GridData[width, height];
-            initialPosition = new Tuple<int, int>(2, 2);
+            initialPosition = new Tuple<int, int>(1, 1);
 
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
@@ -32,8 +32,8 @@ namespace PuzzleGraph.Models
         public bool InitGrid(List<GraphNode> nodes) {
             foreach (var node in nodes) {
 
-                int leftPos =(int) ((double) node.GetValue(Canvas.LeftProperty)-100) / 60 + 1;
-                int topPos =(int) ((double) node.GetValue(Canvas.TopProperty)-60) / 60 + 1;
+                int leftPos =(int) ((double) node.GetValue(Canvas.LeftProperty)-100) / 60 + initialPosition.Item2;
+                int topPos =(int) ((double) node.GetValue(Canvas.TopProperty)-60) / 60 + initialPosition.Item1;
                 if (!checkAdd(new Tuple<int, int>(topPos, leftPos))){
                     Console.WriteLine("Init: Could not add to {0} {1}", topPos, leftPos);
                     return false;
@@ -105,6 +105,10 @@ namespace PuzzleGraph.Models
                 }
             }
             return null;
+        }
+
+        public void refreshGrid(List<GraphNode> hostGraphNodes) { 
+            
         }
     }
 }

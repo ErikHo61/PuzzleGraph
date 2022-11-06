@@ -169,9 +169,16 @@ namespace PuzzleGraph.Models
             List<bool> states = Enumerable.Repeat(false, productNodeCount).ToList();
             //List of Morphisms that occurred in this rule replacement
             List<Morphism> morphs = new List<Morphism>();
-
+            int iteration = 0;
             while (!replacementFinished)
             {
+                //All nodes that have a match should be replaced first
+                //Then attached nodes can be added in
+
+                //used to skip attaching nodes in the first loop
+                
+
+
                 for (int i = 0; i < pGraph.Count; i++)
                 {
                     if (states[i]) {
@@ -201,9 +208,11 @@ namespace PuzzleGraph.Models
                         m.hostGraphNode.Type = node.Type;
                         states[i] = true;
                     }
-                    else if (checkAttached(node, rule, morphs).Item1.Count > 0 || checkAttached(node, rule, morphs).Item2.Count > 0)
+                    else if (iteration > 0 && (checkAttached(node, rule, morphs).Item1.Count > 0 || checkAttached(node, rule, morphs).Item2.Count > 0))
                     { //If there is no match for it, check if it is attached to a node that has already been replaced
                         //Then add the attached node and edge
+                       
+
                         var attachedNodes = checkAttached(node, rule, morphs);
                         var newNode = new GraphNode()
                         {
@@ -213,11 +222,13 @@ namespace PuzzleGraph.Models
                         cv.Children.Add(newNode);
                         //Add edges that go into this node                       
                         foreach (var atNode in attachedNodes.Item1) {
+                            Console.WriteLine("Added Edge from atNode {0} to newNode {1}", atNode.graphID, newNode.graphID);
                             MakeAndAddEdge(atNode, newNode);
                             
                         }
                         //Add edges that go out of this node
                         foreach (var atNode in attachedNodes.Item2) {
+                            Console.WriteLine("Added Edge from newNode {0} to atNode {1}", newNode.graphID, atNode.graphID);
                             MakeAndAddEdge(newNode, atNode);
                             
                         }
@@ -245,38 +256,48 @@ namespace PuzzleGraph.Models
                 //If the replacement is finished, perform one final check to see if
                 //the edge in the rule graph exists in the product graph.
                 //if it doesn't exist, delete it from the hostGraph and the canvas children
-                if (replacementFinished && rule.GetRuleEdgeCount()>0) {
-                   
+                if (replacementFinished && rule.GetRuleEdgeCount() > 0)
+                {
+
                     var edges = rule.GetRuleEdges();
                     bool found = false;
-                    foreach (var edge in edges) {
+                    foreach (var edge in edges)
+                    {
                         var src = edge.Source;
                         var target = edge.Target;
                         var productEdges = rule.GetProductEdges();
-                        
-                        foreach (var pEdge in productEdges) {
-                            if (src.ruleID == pEdge.Source.ruleID && target.ruleID == pEdge.Target.ruleID) {
+
+                        foreach (var pEdge in productEdges)
+                        {
+                            if (src.ruleID == pEdge.Source.ruleID && target.ruleID == pEdge.Target.ruleID)
+                            {
                                 found = true;
                             }
                         }
-                        
+
                     }
-                    if (!found) {
+                    if (!found)
+                    {
                         //Find the corresponding edge
                         //Then delete the corresponding edge in the hostgraph and remove from canvas children
                         GraphNode src2 = null;
                         GraphNode tgt2 = null;
-                        foreach (var morph in morphs) {
-                            if (morph.ruleGraphNode == edges[0].Source) {
+                        foreach (var morph in morphs)
+                        {
+                            if (morph.ruleGraphNode == edges[0].Source)
+                            {
                                 src2 = morph.hostGraphNode;
                             }
-                            if (morph.ruleGraphNode == edges[0].Target) {
+                            if (morph.ruleGraphNode == edges[0].Target)
+                            {
                                 tgt2 = morph.hostGraphNode;
                             }
                         }
 
-                        foreach (var e in hostGraph.Edges.ToList()) {
-                            if (e.Source == src2 && e.Target == tgt2) {
+                        foreach (var e in hostGraph.Edges.ToList())
+                        {
+                            if (e.Source == src2 && e.Target == tgt2)
+                            {
                                 cv.Children.Remove(e);
                                 hostGraph.RemoveEdge(e);
                             }
@@ -284,7 +305,7 @@ namespace PuzzleGraph.Models
 
                     }
                 }
-
+                iteration++;
             }
         }
 
@@ -422,8 +443,6 @@ namespace PuzzleGraph.Models
             foreach (var edge in edges)
             {
                 edge.UpdateLine();
-        
-
             }
         }
 

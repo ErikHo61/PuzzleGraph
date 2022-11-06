@@ -7,20 +7,16 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models.Recipes
 {
-    class RecipeBasic : Recipe
+    class RecipeMedium : Recipe
     {
-        public RecipeBasic() {
-            InitRecipe();
-        }
+        
 
         protected override void InitRecipe()
         {
             rules = new List<Rule>();
-            rules.Add(new RuleExpand());
-            rules.Add(new RuleStartSmall());
-            rules.Add(new RuleTimeLockItem());
+            rules.Add(new RuleStartMedium());
+            rules.Add(new RuleTimeFork());
+            
         }
-
-        
     }
 }
