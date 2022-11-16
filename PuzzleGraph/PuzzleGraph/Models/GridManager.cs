@@ -48,15 +48,19 @@ namespace PuzzleGraph.Models
         public bool addNode(Tuple<int, int> adjPos, GraphNode node) {
             var above = new Tuple<int, int>(adjPos.Item1 - 1, adjPos.Item2);
             var left = new Tuple<int, int>(adjPos.Item1, adjPos.Item2 - 1);
+            var left2 = new Tuple<int, int>(adjPos.Item1, adjPos.Item2 - 2);
             var right = new Tuple<int, int>(adjPos.Item1, adjPos.Item2 + 1);
+            var right2 = new Tuple<int, int>(adjPos.Item1, adjPos.Item2 + 2);
             var below = new Tuple<int, int>(adjPos.Item1 + 1, adjPos.Item2);
 
-            if (checkAdd(below)) {
+            if (checkAdd(below))
+            {
                 grid[below.Item1, below.Item2].activated = true;
                 grid[below.Item1, below.Item2].graphID = node.graphID;
                 Console.WriteLine("Occupied Below Space {0} {1}", below.Item1, below.Item2);
                 return true;
-            } else if (checkAdd(right))
+            }
+            else if (checkAdd(right))
             {
                 grid[right.Item1, right.Item2].activated = true;
                 grid[right.Item1, right.Item2].graphID = node.graphID;
@@ -70,12 +74,27 @@ namespace PuzzleGraph.Models
                 Console.WriteLine("Occupied Above Space {0} {1}", above.Item1, above.Item2);
                 return true;
             }
-            else if (checkAdd(left)) {
+            else if (checkAdd(left))
+            {
                 grid[left.Item1, left.Item2].activated = true;
                 grid[left.Item1, left.Item2].graphID = node.graphID;
                 Console.WriteLine("Occupied Left Space {0} {1}", left.Item1, left.Item2);
                 return true;
             }
+            else if (checkAdd(left2))
+            {
+                grid[left2.Item1, left2.Item2].activated = true;
+                grid[left2.Item1, left2.Item2].graphID = node.graphID;
+                Console.WriteLine("Occupied Left2 Space {0} {1}", left2.Item1, left2.Item2);
+                return true;
+            }
+            else if (checkAdd(right2)) {
+                grid[right2.Item1, right2.Item2].activated = true;
+                grid[right2.Item1, right2.Item2].graphID = node.graphID;
+                Console.WriteLine("Occupied Right2 Space {0} {1}", right2.Item1, right2.Item2);
+                return true;
+            }
+                
             Console.WriteLine("Could not add Node");
             return false;
         }
@@ -86,14 +105,11 @@ namespace PuzzleGraph.Models
 
         private bool checkInBounds(Tuple<int, int> pos) {
             
-            return pos.Item1 > 0 && pos.Item1 < height && pos.Item2 > 0 && pos.Item2 < width;
+            return pos.Item1 >= 0 && pos.Item1 < height && pos.Item2 >= 0 && pos.Item2 < width;
         }
 
         private bool checkAvailable(Tuple<int, int> pos) {
-            //if (!grid[pos.Item1, pos.Item2].activated) {
-            //    return true;
-            //}
-            //return false;
+           
             return !grid[pos.Item1, pos.Item2].activated;
         }
         public Tuple<int, int> getPosition(GraphNode node) {

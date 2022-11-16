@@ -15,7 +15,13 @@ namespace PuzzleGraph.Models.Recipes
         {
             rules = new List<Rule>();
             rules.Add(new RuleStartMedium());
-            rules.Add(new RuleTimeFork());
+            rules.Add(new RuleGate());
+            rules.Add(new RuleKeyLockItem());
+            rules.Add(new RulePuzzleReward());
+            rules.Add(new RuleDoublePuzzle());
+            rules.Add(new RuleGate());
+            rules.Add(new RuleMultiKey());
+            
             
         }
     }

@@ -12,9 +12,11 @@ namespace PuzzleGraph.Models.Recipes
         protected override void InitRecipe()
         {
             rules = new List<Rule>();
-            rules.Add(new RuleStartMedium());
-            rules.Add(new RuleKeyLockItem());
-            rules.Add(new RuleSingleLock());
+            rules.Add(new RuleStartSmall());
+            rules.Add(new RuleGate());
+            rules.Add(new RulePuzzle());
+            rules.Add(new RulePuzzleReward());
+            rules.Add(new RuleSinglePuzzle());
         }
     }
 }

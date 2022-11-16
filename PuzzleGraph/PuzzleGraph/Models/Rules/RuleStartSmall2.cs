@@ -13,35 +13,40 @@ namespace PuzzleGraph.Models.Rules
         {
             GraphNode gn = new GraphNode()
             {
-                Type = "PC",
+                Type = "e",
                 ruleID = 1
             };
             GraphNode gn2 = new GraphNode()
             {
-                Type = "TP",
+                Type = "PC",
                 ruleID = 2
             };
             GraphNode gn3 = new GraphNode()
             {
-                Type = "PC",
+                Type = "tp",
                 ruleID = 3
             };
             GraphNode gn4 = new GraphNode()
             {
-                Type = "TP",
+                Type = "PC",
                 ruleID = 4
             };
             GraphNode gn5 = new GraphNode()
             {
-                Type = "g",
+                Type = "tp",
                 ruleID = 5
+            };
+            GraphNode gn6 = new GraphNode()
+            {
+                Type = "g",
+                ruleID = 6
             };
 
             DataEdge de = new DataEdge(gn, gn2);
             DataEdge de2 = new DataEdge(gn2, gn3);
             DataEdge de3 = new DataEdge(gn3, gn4);
             DataEdge de4 = new DataEdge(gn4, gn5);
-
+            DataEdge de5 = new DataEdge(gn5, gn6);
 
             ProductGraph.AddVertex(gn);
             ProductGraph.AddVertex(gn2);

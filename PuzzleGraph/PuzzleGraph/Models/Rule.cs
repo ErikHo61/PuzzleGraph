@@ -1,4 +1,5 @@
 ﻿using PuzzleGraph.CustomControls;
+using PuzzleGraph.Models.ShapeGrammars.DungeonStructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace PuzzleGraph.Models
         protected DataGraph RuleGraph;
         //contains the replacement graph
         protected DataGraph ProductGraph;
+
+        public DungeonPathway openings;
 
         public Rule() {
             //initialize rulegraph
@@ -63,6 +66,30 @@ namespace PuzzleGraph.Models
             return ProductGraph.Vertices.ToList();
         }
 
+        public GraphNode GetLastProductNode() {
+            var nodes = GetProductVertices();
+            var lastID = 0;
+            foreach (var node in nodes) {
+                if (node.ruleID > lastID) {
+                    lastID = node.ruleID;
+                }
+            }
+            return ProductGraph.getRuleNode(lastID);
+        }
+
+        public GraphNode GetLastRuleNode() {
+            var nodes = GetRuleVertices();
+            var lastID = 0;
+            foreach (var node in nodes)
+            {
+                if (node.ruleID > lastID)
+                {
+                    lastID = node.ruleID;
+                }
+            }
+            return RuleGraph.getRuleNode(lastID);
+        }
+
         public List<DataEdge> GetRuleEdges() {
             return RuleGraph.Edges.ToList();
         }
@@ -90,7 +117,7 @@ namespace PuzzleGraph.Models
 
         public override string ToString()
         {
-            return name;
+            return this.GetType().Name;
         }
     }
 

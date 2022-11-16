@@ -18,7 +18,7 @@ namespace PuzzleGraph.Models.Recipes
             rules = new List<Rule>();
             rules.Add(new RuleExpand());
             rules.Add(new RuleStartSmall());
-            rules.Add(new RuleTimeLockItem());
+            
         }
 
         

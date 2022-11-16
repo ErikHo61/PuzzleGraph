@@ -32,6 +32,8 @@ namespace PuzzleGraph.Models.Rules
                 ruleID = 4
             };
 
+            gn3.coupleNode = gn4;
+
             ProductGraph.AddVertex(gn);
             ProductGraph.AddVertex(gn2);
             ProductGraph.AddVertex(gn3);

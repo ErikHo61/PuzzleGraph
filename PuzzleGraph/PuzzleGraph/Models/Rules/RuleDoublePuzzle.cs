@@ -40,6 +40,8 @@ namespace PuzzleGraph.Models.Rules
                 ruleID = 5
             };
 
+            gn4.coupleNode = gn5;
+
             ProductGraph.AddVertex(gn);
             ProductGraph.AddVertex(gn2);
             ProductGraph.AddVertex(gn3);
@@ -48,7 +50,7 @@ namespace PuzzleGraph.Models.Rules
 
             DataEdge de = new DataEdge(gn, gn2);
             DataEdge de2 = new DataEdge(gn, gn3);
-            DataEdge de3 = new DataEdge(gn3, gn4);
+            DataEdge de3 = new DataEdge(gn2, gn4);
             DataEdge de4 = new DataEdge(gn3, gn4);
             DataEdge de5 = new DataEdge(gn4, gn5);
 
@@ -75,6 +77,7 @@ namespace PuzzleGraph.Models.Rules
 
 
             RuleGraph.AddVertex(gn);
+            RuleGraph.AddVertex(gn2);
 
             DataEdge de = new DataEdge(gn, gn2);
             RuleGraph.AddEdge(de);

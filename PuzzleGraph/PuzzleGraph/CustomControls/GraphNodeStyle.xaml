@@ -8,6 +8,7 @@
                 <ControlTemplate TargetType="local:GraphNode">
                     <Grid>
                         <Ellipse x:Name="PART_Body" Fill="AliceBlue" Width="40" Height="40" Visibility="Visible" Stroke="Black" StrokeThickness="3"></Ellipse>
+                        <TextBlock x:Name="PART_Text" Margin="10"/>
                     </Grid>
                 </ControlTemplate>    
             </Setter.Value>

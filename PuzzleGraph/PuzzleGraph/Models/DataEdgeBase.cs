@@ -24,6 +24,8 @@ namespace PuzzleGraph.Models
             Target = target;
         }
 
-
+        public override string ToString() {
+            return Source + " To " + Target;
+        }
     }
 }

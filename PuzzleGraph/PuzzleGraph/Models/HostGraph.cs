@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models
 {
-    class HostGraph:DataGraph
+    public class HostGraph:DataGraph
     {
         int graphIDCount = 0;
         public override bool AddVertex(GraphNode vertex)
         {
             vertex.graphID = graphIDCount++;
             return base.AddVertex(vertex);
+        }
+
+        internal List<GraphNode> GetAdjNodes(GraphNode node)
+        {
+            var edges = OutEdges(node);
+            List<GraphNode> adjacentNodes = new List<GraphNode>();
+            foreach (var edge in edges)
+            {
+                adjacentNodes.Add(edge.Target);
+            }
+            return adjacentNodes;
         }
     }
 }

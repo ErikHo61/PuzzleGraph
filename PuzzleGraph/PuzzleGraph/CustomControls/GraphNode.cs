@@ -19,15 +19,14 @@ namespace PuzzleGraph.CustomControls
         //for numbering nodes in a hostgraph
         public int graphID { get; set; }
         public Tuple<int, int> gridPos;
-        public List<LevelObject> LevelObjects { get => levelObjects; set => levelObjects = value; }
-
-        private List<LevelObject> levelObjects;
         private Ellipse body;
+        private TextBlock content;
 
         //the height of the ellipse in the template
         public int dHeight;
         //the width of the ellipse in the template
         public int dWidth;
+        public GraphNode coupleNode;
 
         //public static DependencyProperty dWidthProperty = DependencyProperty.Register("Width", typeof(int), typeof(GraphNode), new PropertyMetadata(true));
 
@@ -45,14 +44,16 @@ namespace PuzzleGraph.CustomControls
         public override void OnApplyTemplate()
         {
             body = Template.FindName("PART_Body", this) as Ellipse;
+            content = Template.FindName("PART_Text", this) as TextBlock;
             dHeight = (int) body.Height;
             dWidth = (int) body.Width;
+            content.Text = Type;
             base.OnApplyTemplate();
         }
 
         public override string ToString()
         {
-            return "GraphID = " + graphID + "RuleID = " + ruleID + " Type = "+ Type;
+            return  Type + graphID + ruleID;
 
         }
 
