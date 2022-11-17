@@ -10,11 +10,13 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure.PathPieces
     {
         public override void initPiece()
         {
-            dp.north = true;
-            dp.west = true;
-            dp.east = false;
-            dp.south = true;
+            Direction = Orientation.TriS;
             nodeType = "tp";
+        }
+
+        public override Piece CreateInstance()
+        {
+            return new Piece_tp();
         }
     }
 }

@@ -16,13 +16,13 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         private Tuple<int, int> rootPos;
         //private List<Piece> piecesList;
         public HostGraph hostGraph;
-        private PieceManager pm;
+        private PieceFactory pm;
 
 
         public DungeonManager(int h, int w) {
             pieces = new Piece[h, w];
-            rootPos = new Tuple<int, int>(2, 2);
-            pm = new PieceManager();
+            rootPos = new Tuple<int, int>(3, 3);
+            pm = new PieceFactory();
             
         }
 
@@ -44,7 +44,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         public void CreateDungeonStructure(GraphNode rootNode)
         {
             List<GraphNode> visited = new List<GraphNode>();
-            //fills visited with nodes in DFS order
+            //fills visited with Mission nodes in DFS order
             DFSHelper(rootNode, visited);
             //Remove initial piece because it was added in Init()
             visited.RemoveAll(containsE);
@@ -62,19 +62,24 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
                     if (v.coupleNode == null)
                     {
 
-                        addPiece(pos.Item1, pos.Item2, v.Type);
+                        addPieceOriented(pos.Item1, pos.Item2, v.Type);
                         added.Add(v);
                     }
                     else
                     {
                         //If there is a coupleNode.
-                        addPiece(pos.Item1, pos.Item2, v.Type);
-                        var poss = GetAdjacentPos(pos);
-                        poss.RemoveAll(RemoveNonNulls);
-                        Shuffle(poss);
-                        addPiece(poss[0].Item1, poss[0].Item2, v.coupleNode.Type);
+
+                        addPieceOriented(pos.Item1, pos.Item2, v.Type);
                         added.Add(v);
-                        added.Add(v.coupleNode);
+
+                        addCoupledNode(pos, v, added);
+
+                        //var poss = GetAdjacentPos(pos);
+                        //poss.RemoveAll(RemoveNonNulls);
+                        //Shuffle(poss);
+
+                        //addPieceOriented(poss[0].Item1, poss[0].Item2, v.coupleNode.Type);
+                        //added.Add(v.coupleNode);
                     }
                 }
 
@@ -82,8 +87,25 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             }
         }
 
+        //Adds the coupled node of the passed in argument in the adjacent pos
+        //@arg pos the position of the passed in node
+        //@arg node the node of which has a couple node to add
+        //@arg added a list of added mission nodes to update
+        private void addCoupledNode(Tuple<int, int> pos, GraphNode node, List<GraphNode> added) {
+            var poss = GetAdjacentPos(pos);
+            poss.RemoveAll(RemoveNonNulls);
+            Shuffle(poss);
 
+            addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type);
+            added.Add(node.coupleNode);
+            //Recursively add coupled nodes until there is no more
+            if (node.coupleNode.coupleNode != null) {
+                
+                addCoupledNode(new Tuple<int, int>(poss[0].Item1, poss[0].Item2), node.coupleNode, added);
+            }
+        }
 
+        //DFS to Traverse the mission graph
         private void DFSHelper(GraphNode node, List<GraphNode> visited)
         {
             visited.Add(node);
@@ -100,13 +122,46 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             //Console.WriteLine("End {0}", node.graphID);
         }
 
+        //Add a piece that is oriented so that it is connected to the dungeon
+        public void addPieceOriented(int posh, int posw, string s) {
+            var p = pm.GetPiece(s);
+            p.Direction = FindOrientation(posh, posw, p);
+            pieces[posh, posw] = p;
+        }
 
+        public Orientation FindOrientation(int posh, int posw, Piece p) {
+            if (checkValid(posh - 1, posw) && pieces[posh - 1, posw] != null && pieces[posh - 1, posw].dp.south) {
+                if (p.Direction == Orientation.TriS) {
+                    return Orientation.TriN;                
+                }
+                return Orientation.Vertical;
+            }
+            if (checkValid(posh + 1, posw) && pieces[posh + 1, posw] != null && pieces[posh + 1, posw].dp.north) {
+                if (p.Direction == Orientation.TriN)
+                {
+                    return Orientation.TriS;
+                }
+                return Orientation.Vertical;
+            }
+            if (checkValid(posh, posw-1) && pieces[posh, posw-1] != null && pieces[posh, posw-1].dp.east)
+            {
+                return Orientation.Horizontal;
+            }
+            if (checkValid(posh, posw+1) && pieces[posh, posw+1] != null && pieces[posh, posw+1].dp.west)
+            {
+                return Orientation.Horizontal;
+            }
+            Console.WriteLine("Orientation not found");
+            return Orientation.All;
+        }
 
         public void addPiece(int posh, int posw, string s)
         {
             //pieceslist.add(pm.getpiece(s));
             pieces[posh, posw] = pm.GetPiece(s);
         }
+
+
 
         //The DFS Helper for finding positions to place pieces
         //Recurisvely traverses the pieces to find all available positions
@@ -147,6 +202,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             return pieces[pos.Item1, pos.Item2] != null;
         }
 
+        //Gets adjacent positions to the passed in positions of which there is an exit to
         private List<Tuple<int, int>> GetAdjacentPos(Tuple<int, int> pos)
         {
             var dp = pieces[pos.Item1, pos.Item2].dp;
@@ -202,7 +258,11 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             FindPosHelper(rootPos, visited, positions);
             Shuffle(positions);
             //Add some advanced algorithm in picking a position here ^_^. None for now.
+            if (positions[0] == null) {
+                print();
+                Console.WriteLine("BUG");
 
+            }
             return positions[0];
 
         }
@@ -215,9 +275,9 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
                 for (int j = 0; j < pieces.GetLength(1); j++)
                 {
                     if (pieces[i, j] != null)
-                        Console.Write(pieces[i, j].nodeType + "    ");
+                        Console.Write(pieces[i, j].nodeType + "     ");
                     else {
-                        Console.Write("NA" + "    ");
+                        Console.Write("NA" + "     ");
                     }
                 }
                 Console.WriteLine();

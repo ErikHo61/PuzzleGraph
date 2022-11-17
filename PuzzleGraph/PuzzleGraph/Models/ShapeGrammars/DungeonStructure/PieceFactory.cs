@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
 {
-    class PieceManager
+    //This should be a factory pattern
+    class PieceFactory
     {
         public Dictionary<string, Piece> pieces;
 
-        public PieceManager() {
+        public PieceFactory() {
             pieces = new Dictionary<string, Piece>();
             init();
         }
@@ -32,7 +33,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         }
 
         public Piece GetPiece(string s) {
-            return pieces[s];
+            return pieces[s].CreateInstance();
         }
 
 

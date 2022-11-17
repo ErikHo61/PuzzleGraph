@@ -10,11 +10,13 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure.PathPieces
     {
         public override void initPiece()
         {
-            dp.north = false;
-            dp.west = true;
-            dp.east = true;
-            dp.south = false;
+            Direction = Orientation.Horizontal;
             nodeType = "km";
+        }
+
+        public override Piece CreateInstance()
+        {
+            return new Piece_km();
         }
     }
 }

@@ -133,7 +133,7 @@
     <Compile Include="Models\Rules\RuleStartMedium.cs" />
     <Compile Include="Models\Rules\RuleStartSmall2.cs" />
     <Compile Include="Models\ShapeGrammars\DungeonStructure\DungeonPathway.cs" />
-    <Compile Include="Models\ShapeGrammars\DungeonStructure\PieceManager.cs" />
+    <Compile Include="Models\ShapeGrammars\DungeonStructure\PieceFactory.cs" />
     <Compile Include="Models\ShapeGrammars\DungeonStructure\DungeonManager.cs" />
     <Compile Include="Models\ShapeGrammars\DungeonStructure\PathPieces\Piece_e.cs" />
     <Compile Include="Models\ShapeGrammars\DungeonStructure\PathPieces\Piece_fn.cs" />

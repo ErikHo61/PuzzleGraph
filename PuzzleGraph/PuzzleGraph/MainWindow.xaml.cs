@@ -105,7 +105,7 @@ namespace PuzzleGraph
             //myImage.Source = sm.initBitMap();
             //sm.printHRBitmap();
 
-            DungeonManager dm = new DungeonManager(5,5);
+            DungeonManager dm = new DungeonManager(12,12);
             dm.Init(gm.hostGraph);
 
             dm.CreateDungeonStructure(gm.rootNode);
