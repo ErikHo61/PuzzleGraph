@@ -10,6 +10,7 @@ namespace PuzzleGraph.Models
 {
     public class DataGraph : BidirectionalGraph<GraphNode, DataEdge>
     {
+        public GraphNode rootNode;
         public DataGraph()
         {
         }

@@ -27,9 +27,9 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Button Padding="10 5" Margin="5" Content="RefreshGraph" Click="OnClick_Refresh" ></Button>
-                <Image Margin="10" Width="128" Name="myImage" Grid.Row="1">
+                <Image Stretch="Fill" Margin="10" Width="256" Name="myImage" Grid.Row="1">
                     <Image.Source>
-                        <BitmapImage DecodePixelWidth="128" UriSource="C:\Users\Erik\Pictures\bitmap.png">
+                        <BitmapImage DecodePixelWidth="256" UriSource="C:\Users\Erik\Pictures\bitmap.png">
                             
                         </BitmapImage>
                     </Image.Source>

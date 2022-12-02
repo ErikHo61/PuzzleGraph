@@ -20,7 +20,7 @@ namespace PuzzleGraph.Models
             this.width = width;
             this.height = height;
             grid = new GridData[width, height];
-            initialPosition = new Tuple<int, int>(1, 1);
+            initialPosition = new Tuple<int, int>(0, 0);
 
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
@@ -35,12 +35,12 @@ namespace PuzzleGraph.Models
                 int leftPos =(int) ((double) node.GetValue(Canvas.LeftProperty)-100) / 60 + initialPosition.Item2;
                 int topPos =(int) ((double) node.GetValue(Canvas.TopProperty)-60) / 60 + initialPosition.Item1;
                 if (!checkAdd(new Tuple<int, int>(topPos, leftPos))){
-                    Console.WriteLine("Init: Could not add to {0} {1}", topPos, leftPos);
+                    //Console.WriteLine("Init: Could not add to {0} {1}", topPos, leftPos);
                     return false;
                 }
                 grid[topPos, leftPos].activated = true;
                 grid[topPos, leftPos].graphID = node.graphID;
-                Console.WriteLine("Occupied Space {0} {1}", topPos, leftPos);
+                //Console.WriteLine("Occupied Space {0} {1}", topPos, leftPos);
             }
             return true;
         }
@@ -57,45 +57,45 @@ namespace PuzzleGraph.Models
             {
                 grid[below.Item1, below.Item2].activated = true;
                 grid[below.Item1, below.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Below Space {0} {1}", below.Item1, below.Item2);
+                //Console.WriteLine("Occupied Below Space {0} {1}", below.Item1, below.Item2);
                 return true;
             }
             else if (checkAdd(right))
             {
                 grid[right.Item1, right.Item2].activated = true;
                 grid[right.Item1, right.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Right Space {0} {1}", right.Item1, right.Item2);
+                //Console.WriteLine("Occupied Right Space {0} {1}", right.Item1, right.Item2);
                 return true;
             }
             else if (checkAdd(above))
             {
                 grid[above.Item1, above.Item2].activated = true;
                 grid[above.Item1, above.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Above Space {0} {1}", above.Item1, above.Item2);
+                //Console.WriteLine("Occupied Above Space {0} {1}", above.Item1, above.Item2);
                 return true;
             }
             else if (checkAdd(left))
             {
                 grid[left.Item1, left.Item2].activated = true;
                 grid[left.Item1, left.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Left Space {0} {1}", left.Item1, left.Item2);
+                //Console.WriteLine("Occupied Left Space {0} {1}", left.Item1, left.Item2);
                 return true;
             }
             else if (checkAdd(left2))
             {
                 grid[left2.Item1, left2.Item2].activated = true;
                 grid[left2.Item1, left2.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Left2 Space {0} {1}", left2.Item1, left2.Item2);
+                //Console.WriteLine("Occupied Left2 Space {0} {1}", left2.Item1, left2.Item2);
                 return true;
             }
             else if (checkAdd(right2)) {
                 grid[right2.Item1, right2.Item2].activated = true;
                 grid[right2.Item1, right2.Item2].graphID = node.graphID;
-                Console.WriteLine("Occupied Right2 Space {0} {1}", right2.Item1, right2.Item2);
+                //Console.WriteLine("Occupied Right2 Space {0} {1}", right2.Item1, right2.Item2);
                 return true;
             }
                 
-            Console.WriteLine("Could not add Node");
+            //Console.WriteLine("Could not add Node");
             return false;
         }
 

@@ -127,11 +127,11 @@ namespace PuzzleGraph.Models
         //}
 
         public bool ExecuteGrammar(Rule rule) {
-            Console.WriteLine("Executing Rule {0}", rule);
+            //Console.WriteLine("Executing Rule {0}", rule);
             var matches = SubgraphSearch(rule, rootNode);
             if (matches.Count == 0)
             {
-                Console.WriteLine("No Matches were found for the following: {0}", rule);
+                //Console.WriteLine("No Matches were found for the following: {0}", rule);
                 return false;
             }
             else {
@@ -195,7 +195,7 @@ namespace PuzzleGraph.Models
                     if (states[i]) {
                         continue;
                     }
-                    Console.WriteLine("Replace pNode #{0}", i);
+                    //Console.WriteLine("Replace pNode #{0}", i);
                     var node = pGraph[i];
                     //get Rule graph Node using Product Graph ID
                     var ruleGraphNode = rule.GetRuleNode(node.ruleID);
@@ -214,7 +214,7 @@ namespace PuzzleGraph.Models
 
                         m.productGraphNode = node;
                         morphs.Add(m);
-                        Console.WriteLine("Replace hgNode #{0} with Type {1}", m.hostGraphNode.graphID, node.Type);
+                        //Console.WriteLine("Replace hgNode #{0} with Type {1}", m.hostGraphNode.graphID, node.Type);
                         //Reattach only if the hostgraph node of the last rule node has an out edge
                         if (rule.GetLastRuleNode() == m.ruleGraphNode && hostGraph.OutDegree(m.hostGraphNode) > 0) {
                             reattachOutEdges = true;
@@ -236,13 +236,13 @@ namespace PuzzleGraph.Models
                         cv.Children.Add(newNode);
                         //Add edges that go into this node                       
                         foreach (var atNode in attachedNodes.Item1) {
-                            Console.WriteLine("Added Edge from atNode {0} to newNode {1}", atNode, newNode);
+                            //Console.WriteLine("Added Edge from atNode {0} to newNode {1}", atNode, newNode);
                             newEdges.Add(MakeAndAddEdgeReturn(atNode, newNode));
 
                         }
                         //Add edges that go out of this node
                         foreach (var atNode in attachedNodes.Item2) {
-                            Console.WriteLine("Added Edge from newNode {0} to atNode {1}", newNode, atNode);
+                            //Console.WriteLine("Added Edge from newNode {0} to atNode {1}", newNode, atNode);
                             newEdges.Add(MakeAndAddEdgeReturn(newNode, atNode));
 
                         }
@@ -330,7 +330,7 @@ namespace PuzzleGraph.Models
                     var curHostNode = GetEqHostNodeWithProductNode(morph.productGraphNode, morphs);
                     var otherHostNode = GetEqHostNodeWithProductNode(morph.productGraphNode.coupleNode, morphs);
                     curHostNode.coupleNode = otherHostNode;
-                    Console.WriteLine("Coupled Node {0} to {1}", curHostNode.Type, otherHostNode.Type);
+                    //Console.WriteLine("Coupled Node {0} to {1}", curHostNode.Type, otherHostNode.Type);
                 }
             }
 
@@ -339,7 +339,7 @@ namespace PuzzleGraph.Models
 
             if (rule.GetRuleNodeCount() != rule.GetProductNodeCount() && reattachOutEdges)
             {
-                Console.WriteLine("Reattaching Edges");
+                //Console.WriteLine("Reattaching Edges");
                 //First get the equivalent hostgraph node of the last product node             
                 var hstNode = GetEqHostNodeWithProductNode(rule.GetLastProductNode(), morphs);
 
@@ -352,7 +352,7 @@ namespace PuzzleGraph.Models
                     if (edge.Target != hstNode && !newEdges.Contains(edge)) {
 
                         MakeAndAddEdge(hstNode, edge.Target);
-                        Console.WriteLine("Removing Edge: {0} to {1}", edge.Source, edge.Target);
+                        //Console.WriteLine("Removing Edge: {0} to {1}", edge.Source, edge.Target);
                         cv.Children.Remove(edge);
                         hostGraph.RemoveEdge(edge);
                         
@@ -401,7 +401,7 @@ namespace PuzzleGraph.Models
 
         public Tuple<Morphism, Morphism> GetFirstMatch(List<Tuple<Morphism, Morphism>> matches) {
             if (matches.Count <= 0) {
-                Console.WriteLine("There are no matches");
+                //Console.WriteLine("There are no matches");
                 return null;
             }
             else {
@@ -430,7 +430,7 @@ namespace PuzzleGraph.Models
             while (nodesQueue.Count != 0)
             {
                 var node = nodesQueue.Dequeue();
-                Console.WriteLine(node);
+                //Console.WriteLine(node);
                 var adjNodes = GetAdjNodes(node);
                               
                 if (node.Type == firstNodeType) {
@@ -496,7 +496,7 @@ namespace PuzzleGraph.Models
                     return morph.hostGraphNode;
                 }
             }
-            Console.WriteLine("P: There is no equivalent host node");
+            //Console.WriteLine("P: There is no equivalent host node");
             return null;
         }
 
@@ -509,7 +509,7 @@ namespace PuzzleGraph.Models
                     return morph.hostGraphNode;
                 }
             }
-            Console.WriteLine("R: There is no equivalent host node");
+            //Console.WriteLine("R: There is no equivalent host node");
             return null;
         }
 
@@ -543,7 +543,7 @@ namespace PuzzleGraph.Models
                     DFSHelper(v, visited);
                 }
             }
-            Console.WriteLine("End {0}", node.graphID);
+            //Console.WriteLine("End {0}", node.graphID);
         }
 
         public void printGraphDFS() {

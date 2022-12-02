@@ -11,6 +11,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure.PathPieces
         public override void initPiece()
         {
             Direction = Orientation.All;
+            positiveNodes.Add("e");
             nodeType = "fn";
         }
 

@@ -39,9 +39,6 @@ namespace PuzzleGraph
         public MainWindow()
         {
             InitializeComponent();
-            //ZoomControl.SetViewFinderVisibility(gg_zoomctrl, Visibility.Visible);
-            //gg_zoomctrl.ZoomToFill();
-
             Loaded += MainWindow_Loaded;
         }
 
@@ -75,6 +72,7 @@ namespace PuzzleGraph
             //Recipe rec = new RecipeBasic();
             //gm.ExecuteRecipe(rec);
             gm.ExecuteRecipe(new RecipeSmall());
+            //gm.ExecuteRecipe(new RecipeLoop());
             //gm.ExecuteRecipe(new RecipeMedium());
             //gm.ExecuteGrammar(rl);
 
@@ -95,24 +93,33 @@ namespace PuzzleGraph
             //gm.ExecuteGrammar(rl4);
             //gm.ExecuteGrammar(rl13);
 
-            //gm.printGraphDFS();
+            gm.printGraphDFS();
             gm.refreshGraph();
+            Console.WriteLine("HELLO WHERE IS MY PRINT");
             //gm.printEdges();
 
             //createInitialGraph(5, 4);
-
-            //ShapeManager sm = new ShapeManager();            
+          
             //myImage.Source = sm.initBitMap();
             //sm.printHRBitmap();
 
-            DungeonManager dm = new DungeonManager(12,12);
+            DungeonManager dm = new DungeonManager(6, 6);
             dm.Init(gm.hostGraph);
-
             dm.CreateDungeonStructure(gm.rootNode);
             dm.print();
 
-            
-            
+            dm.DungeonRealization();
+
+            ShapeManager sm = new ShapeManager(dm.GetPieces(), dm.GetRootPos());
+            sm.ConvertToHRMap();
+            myImage.Source = sm.refreshBitMap();
+            //sm.printHRBitmap();
+            //List<Tuple<int, int>> posses = new List<Tuple<int, int>>();
+
+            //Console.WriteLine(posses[0]);
+
+
+
 
         }
 

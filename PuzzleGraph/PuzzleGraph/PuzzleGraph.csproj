@@ -65,6 +65,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="YamlDotNet, Version=12.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.12.0.2\lib\net47\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -109,8 +112,14 @@
     <Compile Include="Models\LevelNode.cs" />
     <Compile Include="Models\LevelObject.cs" />
     <Compile Include="Models\Morphism.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\Tile.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\TileFactory.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\Tiles\Tile_Basic.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\Tiles\Tile_Empty.cs" />
+    <Compile Include="Models\SpaceNotFoundException.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Recipes\RecipeBasic.cs" />
+    <Compile Include="Models\Recipes\RecipeLoop.cs" />
     <Compile Include="Models\Recipes\RecipeMedium.cs" />
     <Compile Include="Models\Recipes\RecipeSmall.cs" />
     <Compile Include="Models\Rule.cs" />
@@ -127,6 +136,7 @@
     <Compile Include="Models\Rules\RuleSingleLock.cs" />
     <Compile Include="Models\Rules\RuleExpand.cs" />
     <Compile Include="Models\Rules\RuleStartG.cs" />
+    <Compile Include="Models\Rules\RuleStartLoop.cs" />
     <Compile Include="Models\Rules\RuleStartMedium2.cs" />
     <Compile Include="Models\Rules\RuleStartSmall.cs" />
     <Compile Include="Models\GraphManager.cs" />
@@ -149,8 +159,8 @@
     <Compile Include="Models\ShapeGrammars\DungeonStructure\Piece.cs" />
     <Compile Include="Models\ShapeGrammars\Rules\RuleEnlarge.cs" />
     <Compile Include="Models\ShapeGrammars\Rules\RuleShrink.cs" />
-    <Compile Include="Models\ShapeGrammars\ShapeManager.cs" />
-    <Compile Include="Models\ShapeGrammars\ShapeRule.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\ShapeManager.cs" />
+    <Compile Include="Models\ShapeGrammars\HRMap\ShapeRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

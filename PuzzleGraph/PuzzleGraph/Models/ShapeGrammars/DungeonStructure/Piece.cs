@@ -13,12 +13,21 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
     public abstract class Piece
     {
         public Piece() {
+            otherNodes = new List<string>();
+            negativeNodes = new List<string>();
+            positiveNodes = new List<string>();
             initPiece();
         }
         //Which pathways are open
-        public  DungeonPathway dp;
+        public DungeonPathway dp;
         //The corresponding mission graph node type
         public string nodeType;
+        //other existing nodes existing in the same room
+        private List<string> otherNodes;
+        //nodes that should not be beside this one
+        public List<string> negativeNodes;
+        //nodes that this node should be placed next to
+        public List<string> positiveNodes;
 
         public abstract void initPiece();
 
@@ -36,9 +45,17 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             } 
         }
 
+        public void AddOtherNode(string s) {
+            otherNodes.Add(s);
+        }
+
+        public List<string> GetOtherNodes() {
+            return otherNodes;
+        }
+
         //Aligns the second piece with the first piece
-        public void alignPieces(Piece otherPiece) { 
-            
+        public void alignPieces(Piece otherPiece) {
+            throw new NotImplementedException("Muda Muda");
         }
 
         public void switchDirection(Orientation o) {

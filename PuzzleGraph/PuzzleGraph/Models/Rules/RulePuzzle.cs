@@ -34,6 +34,8 @@ namespace PuzzleGraph.Models.Rules
                 ruleID = 4
             };
 
+            gn2.coupleNode = gn3;
+
             DataEdge de = new DataEdge(gn, gn2);
             DataEdge de2 = new DataEdge(gn2, gn3);
             DataEdge de3 = new DataEdge(gn3, gn4);
