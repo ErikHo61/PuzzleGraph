@@ -19,7 +19,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.HRMap
 
         private void init() {
             tiles.Add("basic", new Tile_Basic());
-            tiles.Add("nothing", new Tile_Empty());
+            tiles.Add("empty", new Tile_Empty());
         }
 
         public Tile GetTile(string s) {

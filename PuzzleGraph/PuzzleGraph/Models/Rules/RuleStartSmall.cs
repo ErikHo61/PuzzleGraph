@@ -62,7 +62,10 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn8 = new GraphNode()
             {
                 Type = "l",
-                ruleID = 8
+                ruleID = 8,
+                actChildren = new List<GraphNode>() { 
+                    gn7
+                }
             };
             GraphNode gn9 = new GraphNode()
             {

@@ -18,6 +18,8 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             positiveNodes = new List<string>();
             initPiece();
         }
+
+        public int hostgraphID { get; set; }
         //Which pathways are open
         public DungeonPathway dp;
         //The corresponding mission graph node type

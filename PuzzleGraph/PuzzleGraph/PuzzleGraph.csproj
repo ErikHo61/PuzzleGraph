@@ -161,6 +161,8 @@
     <Compile Include="Models\ShapeGrammars\Rules\RuleShrink.cs" />
     <Compile Include="Models\ShapeGrammars\HRMap\ShapeManager.cs" />
     <Compile Include="Models\ShapeGrammars\HRMap\ShapeRule.cs" />
+    <Compile Include="Models\YAMLExport\ExportManager.cs" />
+    <Compile Include="Models\YAMLExport\TileInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

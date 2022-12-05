@@ -29,7 +29,8 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn4 = new GraphNode()
             {
                 Type = "lm",
-                ruleID = 4
+                ruleID = 4,
+                actChildren = new List<GraphNode>() { gn2, gn3}
             };
 
             ProductGraph.AddVertex(gn);

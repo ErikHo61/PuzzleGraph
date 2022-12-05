@@ -21,6 +21,8 @@ namespace PuzzleGraph.Models
         public GraphNode rootNode { get; set; }
         Canvas cv;
         GridManager gridMan;
+
+        public List<List<GraphNode>> groups;
         
 
         public GraphManager(Canvas cv) {
@@ -326,11 +328,20 @@ namespace PuzzleGraph.Models
 
             //Check all product nodes in the rule
             foreach (var morph in morphs) {
+                //Set the host node's coupleNode field
                 if (morph.productGraphNode.coupleNode != null) {
                     var curHostNode = GetEqHostNodeWithProductNode(morph.productGraphNode, morphs);
                     var otherHostNode = GetEqHostNodeWithProductNode(morph.productGraphNode.coupleNode, morphs);
                     curHostNode.coupleNode = otherHostNode;
                     //Console.WriteLine("Coupled Node {0} to {1}", curHostNode.Type, otherHostNode.Type);
+                }
+                //Set the host node's actChildren field
+                if (morph.productGraphNode.actChildren != null) { 
+                    var curHostNode = GetEqHostNodeWithProductNode(morph.productGraphNode, morphs);
+                    curHostNode.actChildren = new List<GraphNode>();
+                    foreach (var actChild in morph.productGraphNode.actChildren) {
+                        curHostNode.actChildren.Add(GetEqHostNodeWithProductNode(actChild, morphs));
+                    }
                 }
             }
 
@@ -544,6 +555,12 @@ namespace PuzzleGraph.Models
                 }
             }
             //Console.WriteLine("End {0}", node.graphID);
+        }
+        public void printGraphIDs() {
+            var verts = hostGraph.Vertices.ToList();
+            foreach (var vert in verts) {
+                Console.WriteLine(vert + " " + vert.graphID);
+            }
         }
 
         public void printGraphDFS() {

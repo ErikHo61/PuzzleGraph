@@ -31,7 +31,10 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn4 = new GraphNode()
             {
                 Type = "pi",
-                ruleID = 4
+                ruleID = 4,
+                actChildren = new List<GraphNode>() { 
+                    gn3                
+                }
             };
 
             GraphNode gn5 = new GraphNode()

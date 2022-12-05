@@ -72,8 +72,8 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             {
                 return gn.Type == "e";
             }
-            Console.WriteLine(hostGraph.getGraphNode(0));
-            Console.WriteLine(hostGraph.OutDegree(hostGraph.getGraphNode(0)));
+            //Console.WriteLine(hostGraph.getGraphNode(0));
+            //Console.WriteLine(hostGraph.OutDegree(hostGraph.getGraphNode(0)));
             bool runOnce = true;
             List<GraphNode> added = new List<GraphNode>();
             foreach (var v in visited) {
@@ -95,14 +95,14 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
                     
                     if (v.coupleNode == null)
                     {
-                        addPieceOriented(pos.Item1, pos.Item2, v.Type);
+                        addPieceOriented(pos.Item1, pos.Item2, v.Type, v.graphID);
                         updateAvailablePositions(pos, availablePositions);
                         added.Add(v);  
                     }
                     else
                     {
                         //If there is a coupleNode.
-                        addPieceOriented(pos.Item1, pos.Item2, v.Type);
+                        addPieceOriented(pos.Item1, pos.Item2, v.Type, v.graphID);
                         added.Add(v);
                         updateAvailablePositions(pos, availablePositions);
 
@@ -496,10 +496,10 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             }
             
             Shuffle(poss);
-            addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type);
-            
-            //addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type);
+            addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type, node.coupleNode.graphID);
             added.Add(node.coupleNode);
+            //addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type);
+
             updateAvailablePositions(poss[0], availablePositions);
 
             //Recursively add coupled nodes until there is no more
@@ -515,7 +515,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             poss.RemoveAll(RemoveNonNulls);
             Shuffle(poss);
 
-            addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type);
+            addPieceOriented(poss[0].Item1, poss[0].Item2, node.coupleNode.Type, node.coupleNode.graphID);
             added.Add(node.coupleNode);
             //Recursively add coupled nodes until there is no more
             if (node.coupleNode.coupleNode != null)
@@ -560,9 +560,10 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         }
 
         //Add a piece that is oriented so that it is connected to the dungeon
-        public void addPieceOriented(int posh, int posw, string s) {
+        public void addPieceOriented(int posh, int posw, string s, int id) {
             var p = pm.GetPiece(s);
             p.Direction = FindOrientation(posh, posw, p);
+            p.hostgraphID = id;
             pieces[posh, posw] = p;
         }
 

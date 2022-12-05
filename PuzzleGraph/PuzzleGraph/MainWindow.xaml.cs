@@ -24,6 +24,8 @@ using PuzzleGraph.Models.Recipes;
 using PuzzleGraph.Models.ShapeGrammars;
 using System.IO;
 using PuzzleGraph.Models.ShapeGrammars.DungeonStructure;
+using PuzzleGraph.Models.YAMLExport;
+using YamlDotNet.Serialization;
 
 namespace PuzzleGraph
 {
@@ -95,6 +97,7 @@ namespace PuzzleGraph
 
             gm.printGraphDFS();
             gm.refreshGraph();
+            gm.printGraphIDs();
             Console.WriteLine("HELLO WHERE IS MY PRINT");
             //gm.printEdges();
 
@@ -110,9 +113,12 @@ namespace PuzzleGraph
 
             dm.DungeonRealization();
 
-            ShapeManager sm = new ShapeManager(dm.GetPieces(), dm.GetRootPos());
+            ShapeManager sm = new ShapeManager(gm.hostGraph, dm.GetPieces(), dm.GetRootPos());
             sm.ConvertToHRMap();
             myImage.Source = sm.refreshBitMap();
+
+            ExportManager em = new ExportManager(sm.GetHRBitmap(), gm.hostGraph, sm.GetTilesInfo());
+            em.Serialize();
             //sm.printHRBitmap();
             //List<Tuple<int, int>> posses = new List<Tuple<int, int>>();
 
@@ -120,7 +126,9 @@ namespace PuzzleGraph
 
 
 
-
+           
+            //serializer.Serialize(writer, yaml);
+            
         }
 
         

@@ -27,6 +27,8 @@ namespace PuzzleGraph.CustomControls
         //the width of the ellipse in the template
         public int dWidth;
         public GraphNode coupleNode;
+        //children that are used to activate this node
+        public List<GraphNode> actChildren;
 
         //public static DependencyProperty dWidthProperty = DependencyProperty.Register("Width", typeof(int), typeof(GraphNode), new PropertyMetadata(true));
 

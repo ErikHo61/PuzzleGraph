@@ -26,7 +26,10 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn3 = new GraphNode()
             {
                 Type = "pi",
-                ruleID = 3
+                ruleID = 3,
+                actChildren = new List<GraphNode>() { 
+                    gn2
+                }
             };
 
             GraphNode gn4 = new GraphNode()
@@ -35,7 +38,6 @@ namespace PuzzleGraph.Models.Rules
                 ruleID = 4
             };
 
-            gn2.coupleNode = gn3;
             gn3.coupleNode = gn4;
 
             ProductGraph.AddVertex(gn);

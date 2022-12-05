@@ -20,7 +20,8 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn2 = new GraphNode()
             {
                 Type = "pi",
-                ruleID = 2
+                ruleID = 2,
+                actChildren = new List<GraphNode>() {gn}
             };
 
             GraphNode gn3 = new GraphNode()
@@ -31,7 +32,10 @@ namespace PuzzleGraph.Models.Rules
             GraphNode gn4 = new GraphNode()
             {
                 Type = "l",
-                ruleID = 4
+                ruleID = 4,
+                actChildren = new List<GraphNode>() { 
+                    gn3
+                }
             };
 
             gn2.coupleNode = gn3;

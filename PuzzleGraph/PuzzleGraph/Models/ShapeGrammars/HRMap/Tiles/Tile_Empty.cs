@@ -20,7 +20,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.HRMap.Tiles
             {
                 for (int j = 0; j < map.Width; j++)
                 {
-                    Color tileColor = Color.FromArgb(64, 64, 64); //Nothing Color
+                    Color tileColor = Color.FromArgb(64, 64, 64); //Empty Color
                     
 
                     map.SetPixel(i, j, tileColor);
