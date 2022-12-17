@@ -21,13 +21,11 @@ namespace PuzzleGraph.Models
         public GraphNode rootNode { get; set; }
         Canvas cv;
         GridManager gridMan;
-
-        public List<List<GraphNode>> groups;
         
 
         public GraphManager(Canvas cv) {
             hostGraph = new HostGraph();
-            gridMan = new GridManager(12, 12);
+            gridMan = new GridManager(18, 18);
             this.cv = cv;
             
         }
@@ -103,8 +101,8 @@ namespace PuzzleGraph.Models
 
             
             GraphNode gn = new GraphNode();
-            Canvas.SetTop(gn, 60);
-            Canvas.SetLeft(gn, 100);
+            Canvas.SetTop(gn, 60 + 60);
+            Canvas.SetLeft(gn, 100 + 60);
                     
             hostGraph.AddVertex(gn);
             cv.Children.Add(gn);
@@ -129,7 +127,7 @@ namespace PuzzleGraph.Models
         //}
 
         public bool ExecuteGrammar(Rule rule) {
-            //Console.WriteLine("Executing Rule {0}", rule);
+            Console.WriteLine("Executing Rule {0}", rule);
             var matches = SubgraphSearch(rule, rootNode);
             if (matches.Count == 0)
             {
@@ -190,6 +188,9 @@ namespace PuzzleGraph.Models
             
             while (!replacementFinished)
             {
+
+                Console.WriteLine(" ");
+                printGraphDFS();
                 //All nodes that have a match should be replaced first
                 //Then attached nodes can be added in
                 for (int i = 0; i < pGraph.Count; i++)
@@ -204,7 +205,7 @@ namespace PuzzleGraph.Models
 
                     //We already have a matching between host graph and rule graph
                     //Then we need a matching between hostgraph and product graph
-                    if (!(ruleGraphNode is null)) //should i check the rule or the morphism list?
+                    if (!(ruleGraphNode is null))
                     {
                         Tuple<Morphism, Morphism> match = GetFirstMatch(matches);
                         Morphism m;
@@ -326,7 +327,7 @@ namespace PuzzleGraph.Models
                 iteration++;
             }
 
-            //Check all product nodes in the rule
+            //Check all product nodes in the rule to set the coupleNode and act children
             foreach (var morph in morphs) {
                 //Set the host node's coupleNode field
                 if (morph.productGraphNode.coupleNode != null) {

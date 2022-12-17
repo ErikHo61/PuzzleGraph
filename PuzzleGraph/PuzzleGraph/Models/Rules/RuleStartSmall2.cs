@@ -53,11 +53,13 @@ namespace PuzzleGraph.Models.Rules
             ProductGraph.AddVertex(gn3);
             ProductGraph.AddVertex(gn4);
             ProductGraph.AddVertex(gn5);
+            ProductGraph.AddVertex(gn6);
 
             ProductGraph.AddEdge(de);
             ProductGraph.AddEdge(de2);
             ProductGraph.AddEdge(de3);
             ProductGraph.AddEdge(de4);
+            ProductGraph.AddEdge(de5);
         }
 
         protected override void InitRuleGraph()

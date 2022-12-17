@@ -28,7 +28,7 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             dHeight = h;
             dWidth = w;
             pieces = new Piece[h, w];
-            rootPos = new Tuple<int, int>(1, 1);
+            rootPos = new Tuple<int, int>(0, 0);
             pm = new PieceFactory();
             roomEnders = new List<string>() {"fn", "tp", "e", "g"};
             formedRooms = new List<List<Tuple<int, int>>>();
@@ -105,8 +105,10 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
                         addPieceOriented(pos.Item1, pos.Item2, v.Type, v.graphID);
                         added.Add(v);
                         updateAvailablePositions(pos, availablePositions);
-
-                        addCoupledNode(pos, v, added, availablePositions);
+                        if (!added.Contains(v.coupleNode)) {
+                            addCoupledNode(pos, v, added, availablePositions);
+                        }
+                        
                     }
                 }
                 if (runOnce)
@@ -294,13 +296,6 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
 
         }
 
-        //No longer needed
-        private void combineRooms(List<List<Tuple<int, int>>> formedRooms) {
-            throw new NotImplementedException("No longer needed");
-        }
-
-
-
         private void formRoomsHelper(Tuple<int, int> pos, List<Tuple<int, int>> visited, List<Tuple<int, int>> roomList) {
             visited.Add(pos);
 
@@ -343,28 +338,58 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         //
         public void placeLocks() {
             foreach (var roomList in formedRooms) {
-                bool addLock = false;
                 List<Tuple<int, int>> rL = new List<Tuple<int, int>>();
                 foreach(var pos in roomList) {
-                    if (pieces[pos.Item1, pos.Item2].nodeType == "l") {
-                        addLock = true;
-                        rL = roomList; 
+                    if (pieces[pos.Item1, pos.Item2].nodeType == "l" || pieces[pos.Item1, pos.Item2].nodeType == "lm") {
+                        
+                        addLocks(roomList, pos);
                     }
-                }
-                if (addLock) {
-                    addLocks(rL);
                 }
             }
         }
+        
+        
+        private void addLocks(List<Tuple<int, int>> roomList, Tuple<int, int> pos) {
+            if (!AddLockToPosition(pos, roomList)) {
+                if (AddLockToPositionInBetween(pos, roomList)) {
+                    return;   
+                }
+                else if (roomList.Count <= 2)
+                {
+                    AddLockToPosition(roomList[0], roomList);
 
-        //Adds locks depending on the number of rooms and their structure
-        // 1. If the rooms form an outward branch that doesn't reconnect to anything, then add the lock to the first room
-        // 2. If the rooms reconnect to something, then add locks to both the first room and the last room or
-        // add locks
-        private void addLocks(List<Tuple<int, int>> roomList) {
-            if (!AddLockToPosition(roomList[roomList.Count - 1], roomList)) {
-                AddLockToPosition(roomList[0], roomList);
+                }
+                
+
             }         
+        }
+
+        //adds lock so that it is between the pos and the previous room in the roomList
+        private bool AddLockToPositionInBetween(Tuple<int, int> pos, List<Tuple<int, int>> roomList) {
+            var posDP = pieces[pos.Item1, pos.Item2].dp;
+            var index = roomList.IndexOf(pos);
+            var otherPiece = pieces[roomList[index - 1].Item1, roomList[index - 1].Item2];
+
+            if (pieces[pos.Item1-1, pos.Item2] == otherPiece) {
+                pieces[pos.Item1, pos.Item2].AddOtherNode("Lock-North");
+                return true;
+            }
+            if (pieces[pos.Item1 + 1, pos.Item2] == otherPiece) {
+                pieces[pos.Item1, pos.Item2].AddOtherNode("Lock-South");
+                return true;
+            }
+            if (pieces[pos.Item1, pos.Item2-1] == otherPiece)
+            {
+                pieces[pos.Item1, pos.Item2].AddOtherNode("Lock-West");
+                return true;
+            }
+            if (pieces[pos.Item1, pos.Item2+1] == otherPiece)
+            {
+                pieces[pos.Item1, pos.Item2].AddOtherNode("Lock-East");
+                return true;
+            }
+
+            return false;
         }
 
         //Adds locks to position
@@ -481,7 +506,6 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
         //@arg node the node of which has a couple node to add
         //@arg added a list of added mission nodes to update
         private void addCoupledNode(Tuple<int, int> pos, GraphNode node, List<GraphNode> added, List<Tuple<int, int>> availablePositions) {
-            
             var poss = GetAdjacentPos(pos);
             poss.RemoveAll(RemoveNonNulls);
             //If there are no available positions attempt to create one

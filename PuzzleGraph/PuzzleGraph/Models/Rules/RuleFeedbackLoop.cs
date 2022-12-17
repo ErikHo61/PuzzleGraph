@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models.Rules
 {
-    class RuleDoublePuzzle : Rule
+    class RuleFeedbackLoop : Rule
     {
         protected override void InitProductGraph()
         {
@@ -18,50 +18,61 @@ namespace PuzzleGraph.Models.Rules
             };
             GraphNode gn2 = new GraphNode()
             {
-                Type = "pp",
+                Type = "ppfl",
                 ruleID = 2
             };
-
             GraphNode gn3 = new GraphNode()
             {
-                Type = "pp",
+                Type = "pifl",
                 ruleID = 3
             };
-
             GraphNode gn4 = new GraphNode()
             {
-                Type = "pi",
-                ruleID = 4,
-                actChildren = new List<GraphNode>() { 
-                    gn2, gn3
-                }
+                Type = "ppfl",
+                ruleID = 4
             };
-
             GraphNode gn5 = new GraphNode()
             {
-                Type = "pr",
+                Type = "ppfl",
                 ruleID = 5
             };
+            GraphNode gn6 = new GraphNode()
+            {
+                Type = "k",
+                ruleID = 6
+            };
+            GraphNode gn7 = new GraphNode()
+            {
+                Type = "l",
+                ruleID = 7
+            };
+            gn3.actChildren = new List<GraphNode>()
+            {
+                gn2, gn4, gn5
+            };
+            gn3.coupleNode = gn6;
 
-            gn4.coupleNode = gn5;
+            DataEdge de = new DataEdge(gn, gn2);
+            DataEdge de2 = new DataEdge(gn2, gn3);
+            DataEdge de3 = new DataEdge(gn3, gn4);
+            DataEdge de4 = new DataEdge(gn4, gn5);
+            DataEdge de5 = new DataEdge(gn5, gn6);
+            DataEdge de6 = new DataEdge(gn6, gn7);
 
             ProductGraph.AddVertex(gn);
             ProductGraph.AddVertex(gn2);
             ProductGraph.AddVertex(gn3);
             ProductGraph.AddVertex(gn4);
             ProductGraph.AddVertex(gn5);
-
-            DataEdge de = new DataEdge(gn, gn2);
-            DataEdge de2 = new DataEdge(gn, gn3);
-            DataEdge de3 = new DataEdge(gn2, gn4);
-            DataEdge de4 = new DataEdge(gn3, gn4);
-            DataEdge de5 = new DataEdge(gn4, gn5);
+            ProductGraph.AddVertex(gn6);
+            ProductGraph.AddVertex(gn7);
 
             ProductGraph.AddEdge(de);
             ProductGraph.AddEdge(de2);
             ProductGraph.AddEdge(de3);
             ProductGraph.AddEdge(de4);
             ProductGraph.AddEdge(de5);
+            ProductGraph.AddEdge(de6);
         }
 
         protected override void InitRuleGraph()
@@ -71,20 +82,18 @@ namespace PuzzleGraph.Models.Rules
                 Type = "PC",
                 ruleID = 1
             };
-
             GraphNode gn2 = new GraphNode()
             {
-                Type = "PR",
+                Type = "G",
                 ruleID = 2
             };
 
+            DataEdge de = new DataEdge(gn, gn2);
 
             RuleGraph.AddVertex(gn);
             RuleGraph.AddVertex(gn2);
 
-            DataEdge de = new DataEdge(gn, gn2);
             RuleGraph.AddEdge(de);
-
         }
     }
 }

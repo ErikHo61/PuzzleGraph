@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Models.Recipes
 {
-    class RecipeLoop : Recipe
+    class RecipeSmall2 : Recipe
     {
         protected override void InitRecipe()
         {
             rules = new List<Rule>();
-            rules.Add(new RuleStartSmall());
+            rules.Add(new RuleStartSmall2());
             rules.Add(new RuleGate());
-            rules.Add(new RuleFeedbackLoop());
+            rules.Add(new RulePuzzleToPuzzle());
             rules.Add(new RuleGate());
             rules.Add(new RuleSingleLock());
         }

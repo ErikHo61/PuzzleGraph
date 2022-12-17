@@ -15,6 +15,7 @@ namespace PuzzleGraph.Models.YAMLExport
         private readonly HostGraph hostGraph;
         private Dictionary<Color, string> colorDict;
         private readonly List<TileInfo> tiles;
+        public String path { get; set; }
 
         public ExportManager(Bitmap bm, HostGraph hg, List<TileInfo> tiles) {
             hrMap = bm;
@@ -25,8 +26,10 @@ namespace PuzzleGraph.Models.YAMLExport
         }
 
         private void initColorDict() {
-            colorDict.Add(Color.FromArgb(234, 44, 240), "pp");//pink
-            colorDict.Add(Color.FromArgb(195, 44, 240), "pi");//purple
+            colorDict.Add(Color.FromArgb(234, 44, 235), "pp");//pink
+            colorDict.Add(Color.FromArgb(194, 44, 240), "pi");//purple
+            colorDict.Add(Color.FromArgb(234, 44, 240), "ppfl");//pink
+            colorDict.Add(Color.FromArgb(195, 44, 240), "pifl");//purple
             colorDict.Add(Color.FromArgb(103, 44, 240), "pr");//blue
             colorDict.Add(Color.FromArgb(255, 255, 51), "k");//yellow
             colorDict.Add(Color.FromArgb(220, 220, 51), "km");//yellow
@@ -37,6 +40,8 @@ namespace PuzzleGraph.Models.YAMLExport
             colorDict.Add(Color.FromArgb(205, 142, 142), "wall");
             colorDict.Add(Color.FromArgb(114, 205, 114), "floor"); //Floor Color
             colorDict.Add(Color.FromArgb(64, 64, 64), "empty");
+            colorDict.Add(Color.FromArgb(0, 0, 0, 0), "empty");
+            colorDict.Add(Color.FromArgb(32, 44, 200), "e");//entrance blue
         }
 
         private TileInfo ContainsPos(List<TileInfo> tiles, int y, int x) {
@@ -52,7 +57,7 @@ namespace PuzzleGraph.Models.YAMLExport
         {
 
 
-            var path = "C:/Users/Erik/Downloads/procgen.yaml";
+            
             var writer = new StreamWriter(path);
             var serializer = new SerializerBuilder().Build();
             string yaml;

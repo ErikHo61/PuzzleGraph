@@ -95,7 +95,7 @@ namespace PuzzleGraph.Models
                 return true;
             }
                 
-            //Console.WriteLine("Could not add Node");
+            Console.WriteLine("Could not add Node " + node);
             return false;
         }
 

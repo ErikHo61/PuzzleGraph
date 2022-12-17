@@ -29,6 +29,8 @@ namespace PuzzleGraph.Models.ShapeGrammars.DungeonStructure
             pieces.Add("pp", new Piece_pp());
             pieces.Add("pr", new Piece_pr());
             pieces.Add("tp", new Piece_tp());
+            pieces.Add("pifl", new Piece_pifl());
+            pieces.Add("ppfl", new Piece_ppfl());
 
         }
 

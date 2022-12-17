@@ -54,10 +54,10 @@ namespace PuzzleGraph
             gm = new GraphManager(GraphCanvas);
             //st.graphSetup();
             gm.SmallGraphSetup();
-            //Rule rl = new RuleStartSmall();
-            //Rule rl2 = new RuleStartMedium();
-            //Rule rl3 = new RuleExpand();
-
+            //Rule rl = new RuleStartSmall2();
+            //Rule rl2 = new RuleGate();
+            //Rule rl3 = new RulePuzzleToPuzzle();
+            //Rule rl4 = new RuleSingleLock();
 
             //Rule rl5 = new RulePuzzle();
             //Rule rl6 = new RuleStartG();
@@ -73,40 +73,24 @@ namespace PuzzleGraph
             //Rule rl13 = new RuleMultiKey();
             //Recipe rec = new RecipeBasic();
             //gm.ExecuteRecipe(rec);
-            gm.ExecuteRecipe(new RecipeSmall());
+            //gm.ExecuteRecipe(new RecipeSmall());
+            //gm.ExecuteRecipe(new RecipeLoop());
             //gm.ExecuteRecipe(new RecipeLoop());
             //gm.ExecuteRecipe(new RecipeMedium());
+            gm.ExecuteRecipe(new RecipeMulti());
             //gm.ExecuteGrammar(rl);
-
-            //List<Tuple<int, int>> posses = new List<Tuple<int, int>>();
-            //var pos1 = new Tuple<int, int>(1, 1);
-            //var pos2 = new Tuple<int, int>(1, 1);
-            //var pos3 = new Tuple<int, int>(1, 1);
-            //posses.Add(pos1);
-            //Console.WriteLine(posses.Contains(pos2));
-            //Console.WriteLine(posses.Contains(pos3));
-
+            //gm.ExecuteGrammar(rl2);
+            //gm.ExecuteGrammar(rl3);
+            //gm.ExecuteGrammar(rl2);
             //gm.ExecuteGrammar(rl4);
-            //gm.ExecuteGrammar(rl5);
 
-            //gm.ExecuteGrammar(rl8);
-            //gm.ExecuteGrammar(rl10);
-
-            //gm.ExecuteGrammar(rl4);
-            //gm.ExecuteGrammar(rl13);
-
-            gm.printGraphDFS();
             gm.refreshGraph();
+            gm.printGraphDFS();
+
             gm.printGraphIDs();
             Console.WriteLine("HELLO WHERE IS MY PRINT");
-            //gm.printEdges();
 
-            //createInitialGraph(5, 4);
-          
-            //myImage.Source = sm.initBitMap();
-            //sm.printHRBitmap();
-
-            DungeonManager dm = new DungeonManager(6, 6);
+            DungeonManager dm = new DungeonManager(8, 8);
             dm.Init(gm.hostGraph);
             dm.CreateDungeonStructure(gm.rootNode);
             dm.print();
@@ -118,17 +102,10 @@ namespace PuzzleGraph
             myImage.Source = sm.refreshBitMap();
 
             ExportManager em = new ExportManager(sm.GetHRBitmap(), gm.hostGraph, sm.GetTilesInfo());
+            em.path = "C:/Users/Erik/Downloads/RecipeMulti.yaml";
             em.Serialize();
             //sm.printHRBitmap();
-            //List<Tuple<int, int>> posses = new List<Tuple<int, int>>();
 
-            //Console.WriteLine(posses[0]);
-
-
-
-           
-            //serializer.Serialize(writer, yaml);
-            
         }
 
         

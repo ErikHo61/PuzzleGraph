@@ -24,7 +24,7 @@ namespace PuzzleGraph.Models.ShapeGrammars
         HostGraph hg;
 
         public ShapeManager(HostGraph hg, Piece[,] pieces, Tuple<int, int> rootPos) {
-            hrMap = new Bitmap(36, 36);
+            hrMap = new Bitmap(72, 72);
             tf = new TileFactory();
             colorDict = new Dictionary<string, System.Drawing.Color>();
             tiles = new List<TileInfo>();
@@ -39,16 +39,19 @@ namespace PuzzleGraph.Models.ShapeGrammars
         }
 
         private void initColorDict() {
+            colorDict.Add("e", Color.FromArgb(32, 44, 200));//entrance blue
             colorDict.Add("pp", Color.FromArgb(234, 44, 240));//pink
             colorDict.Add("pi", Color.FromArgb(195, 44, 240));//purple
             colorDict.Add("pr", Color.FromArgb(103, 44, 240));//blue
             colorDict.Add("k", Color.FromArgb(255, 255, 51));//yellow
             colorDict.Add("km", Color.FromArgb(220, 220, 51));//yellow
-            //colorDict.Add("l", Color.FromArgb(118, 16, 16)); //brown
-            //colorDict.Add("lm", Color.FromArgb(118, 18, 18));//brown
+            colorDict.Add("l", Color.FromArgb(118, 16, 16)); //brown
+            colorDict.Add("lm", Color.FromArgb(118, 18, 18));//brown
             colorDict.Add("tp", Color.FromArgb(134, 106, 192)); // light purple
             colorDict.Add("g", Color.FromArgb(240, 44, 64)); // red
-            
+            colorDict.Add("pifl", Color.FromArgb(194, 44, 240));//purple
+            colorDict.Add("ppfl", Color.FromArgb(234, 44, 235));//pink
+
         }
 
         public List<TileInfo> GetTilesInfo() {
@@ -155,7 +158,7 @@ namespace PuzzleGraph.Models.ShapeGrammars
                     else {
                         newTile = tf.GetTile("empty");
                     }
-                    
+                    //make a walled room
                     for (int h = 0; h < newTile.map.Height; h++) {
                         for (int k = 0; k < newTile.map.Width; k++) {
                             hrMap.SetPixel(k+j*6, h+i*6, newTile.map.GetPixel(k, h));
@@ -164,10 +167,6 @@ namespace PuzzleGraph.Models.ShapeGrammars
                     }
                     if (pieces[i, j] != null) {
                         DrillPathways(newTile, i, j);
-                        if (pieces[i, j].GetOtherNodes().Count > 0) {
-                            AddLocks(newTile, i, j);
-                        }
-
                         if (colorDict.ContainsKey(pieces[i, j].nodeType)) {
                             placeObjects(newTile, i, j);
                         }
@@ -182,39 +181,48 @@ namespace PuzzleGraph.Models.ShapeGrammars
         //Place objects into  bitmap
         private void placeObjects(Tile newTile, int y, int x) {
             var p = pieces[y, x];
+            if (pieces[y, x].GetOtherNodes().Count <= 0)
+            {
+                hrMap.SetPixel(3 + x * newTile.map.Width, 3 + y * newTile.map.Height, colorDict[pieces[y, x].nodeType]);
+            }
             
-            hrMap.SetPixel(3 + x * newTile.map.Width, 3 + y * newTile.map.Height, colorDict[pieces[y, x].nodeType]);
             TileInfo ti = new TileInfo();
             bool toAdd = false;
             if (hg.getGraphNode(pieces[y, x].hostgraphID).coupleNode != null) { // if it has a couple node
                 toAdd = true;
-                ti.coupleID = hg.getGraphNode(pieces[y, x].hostgraphID).coupleNode.graphID;
-                
-            } if (hg.getGraphNode(pieces[y, x].hostgraphID).actChildren != null) { //if it is pi, l or lm it will have act children
+                ti.coupleID = hg.getGraphNode(pieces[y, x].hostgraphID).coupleNode.graphID;             
+            } 
+            if (hg.getGraphNode(pieces[y, x].hostgraphID).actChildren != null) { //if it is pi, l or lm it will have act children
                 toAdd = true;
                 ti.actChildren ="";
                 foreach (var child in hg.getGraphNode(pieces[y, x].hostgraphID).actChildren) {
                     ti.actChildren += "-";
                     ti.actChildren+=child.graphID;
                     
-                }
-                
-                
+                }            
             } else {
                 toAdd = true;
+               
             }
-            if (toAdd) {
+            if (pieces[y, x].GetOtherNodes().Count > 0) //placing other nodes
+            {
+                ti.type = pieces[y, x].nodeType;
+                ti.graphID = pieces[y, x].hostgraphID;
+                AddLocksAndTiles(newTile, y, x, ti);
+            }
+            else if (toAdd) {
                 ti.type = pieces[y, x].nodeType;
                 ti.graphID = pieces[y, x].hostgraphID;
                 ti.x = 3 + x * newTile.map.Width;
                 ti.y = 3 + y * newTile.map.Height;
                 tiles.Add(ti);
-            } 
+            }
+            
         }
 
         //Drill Pathways into walls
         private void DrillPathways(Tile newTile, int i, int j) {
-            System.Drawing.Color floorColor = System.Drawing.Color.FromArgb(114, 205, 114);
+            System.Drawing.Color floorColor = System.Drawing.Color.FromArgb(114, 205, 114);//brown
             if (pieces[i, j].dp.north)
             {
                 hrMap.SetPixel(2 + j * newTile.map.Width, 0 + i * newTile.map.Height, floorColor);
@@ -237,27 +245,47 @@ namespace PuzzleGraph.Models.ShapeGrammars
             }
         }
 
-        private void AddLocks(Tile newTile, int i, int j) {
+        private void AddLocksAndTiles(Tile newTile, int i, int j, TileInfo ti) {
             System.Drawing.Color lockColor = System.Drawing.Color.FromArgb(118, 16, 16);
+            
             if (pieces[i, j].GetOtherNodes().Contains("Lock-North")) {
                 hrMap.SetPixel(2 + j * newTile.map.Width, 0 + i * newTile.map.Height, lockColor);
                 hrMap.SetPixel(3 + j * newTile.map.Width, 0 + i * newTile.map.Height, lockColor);
+                addTileClone(ti, 0 + i * newTile.map.Height, 2 + j * newTile.map.Width);
+                addTileClone(ti, 0 + i * newTile.map.Height, 3 + j * newTile.map.Width);
             }
             if (pieces[i, j].GetOtherNodes().Contains("Lock-West"))
             {
                 hrMap.SetPixel(0 + j * newTile.map.Width, 2 + i * newTile.map.Height, lockColor);
                 hrMap.SetPixel(0 + j * newTile.map.Width, 3 + i * newTile.map.Height, lockColor);
+                addTileClone(ti, 2 + i * newTile.map.Height, 0 + j * newTile.map.Width);
+                addTileClone(ti, 3 + i * newTile.map.Height, 0 + j * newTile.map.Width);
             }
             if (pieces[i, j].GetOtherNodes().Contains("Lock-East"))
             {
                 hrMap.SetPixel(newTile.map.Width - 1 + j * newTile.map.Width, 2 + i * newTile.map.Height, lockColor);
                 hrMap.SetPixel(newTile.map.Width - 1 + j * newTile.map.Width, 3 + i * newTile.map.Height, lockColor);
+                addTileClone(ti, 2 + i * newTile.map.Height, newTile.map.Width - 1 + j * newTile.map.Width);
+                addTileClone(ti, 3 + i * newTile.map.Height, newTile.map.Width - 1 + j * newTile.map.Width);
             }
             if (pieces[i, j].GetOtherNodes().Contains("Lock-South"))
             {
                 hrMap.SetPixel(2 + j * newTile.map.Width, newTile.map.Height - 1 + i * newTile.map.Height, lockColor);
                 hrMap.SetPixel(3 + j * newTile.map.Width, newTile.map.Height - 1 + i * newTile.map.Height, lockColor);
+                addTileClone(ti, newTile.map.Height - 1 + i * newTile.map.Height, 2 + j * newTile.map.Width);
+                addTileClone(ti, newTile.map.Height - 1 + i * newTile.map.Height, 3 + j * newTile.map.Width);
             }
+        }
+
+        private void addTileClone(TileInfo ti, int y, int x) {
+            TileInfo ti1 = new TileInfo();
+            ti1.type = ti.type;
+            ti1.graphID = ti.graphID;          
+            ti1.coupleID = ti.coupleID;
+            ti1.actChildren = ti.actChildren;
+            ti1.y = y;
+            ti1.x = x;
+            tiles.Add(ti1);
         }
 
         public BitmapImage BitmapToImageSource(Bitmap bitmap)
